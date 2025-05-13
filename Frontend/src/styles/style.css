@@ -208,3 +208,16 @@ textarea::-webkit-scrollbar-track {
         background-color: #fff;
     }
 }
+
+/* Mensagens de erro */
+.error-message {
+    color: #d93025;
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+/* Campo com erro */
+.input-field input.invalid,
+.input-field textarea.invalid {
+    border-color: #d93025;
+}
