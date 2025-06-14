@@ -1,76 +1,106 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="src/styles/style.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="src/styles/style.css" />
     <title>Senac - Cadastro Evento</title>
-</head>
-<body>
+  </head>
+  <body>
     <main id="form_container">
-        <div id="form_header">
-            <h1 id="form_title">Criar Evento</h1>
-            <button class="btn-default" onclick="window.location.href='index.html'">
-                <i class="fa-solid fa-right-to-bracket"></i>
-            </button>
+      <div id="form_header">
+        <h1 id="form_title">Criar Evento</h1>
+        <button class="btn-default" onclick="window.location.href='index.html'">
+          <i class="fa-solid fa-right-to-bracket"></i>
+        </button>
+      </div>
+
+      <form id="form">
+        <div id="input_container">
+          <div class="input-box">
+            <label for="event_name" class="form-label">Nome do Evento *</label>
+            <div class="input-field">
+              <input
+                type="text"
+                name="event_name"
+                id="event_name"
+                class="form-control"
+                placeholder="Exemplo de Evento"
+              />
+              <i class="fa-regular fa-calendar"></i>
+            </div>
+            <div id="error-event_name" class="error-message"></div>
+          </div>
+
+          <div class="input-box">
+            <label for="description" class="form-label">Descrição *</label>
+            <div class="input-field">
+              <textarea
+                name="description"
+                id="description"
+                class="form-control"
+                placeholder="Descrição do evento"
+              ></textarea>
+              <i class="fa-regular fa-file-alt"></i>
+            </div>
+            <div id="error-description" class="error-message"></div>
+          </div>
+
+          <div class="input-box">
+            <label for="observation" class="form-label">Observação *</label>
+            <div class="input-field">
+              <textarea
+                name="observation"
+                id="observation"
+                class="form-control"
+                placeholder="Observações adicionais"
+              ></textarea>
+              <i class="fa-regular fa-sticky-note"></i>
+            </div>
+            <div id="error-observation" class="error-message"></div>
+          </div>
+
+          <div class="input-box">
+            <label for="start_date" class="form-label">Data de Início *</label>
+            <div class="input-field">
+              <input
+                type="datetime-local"
+                name="start_date"
+                id="start_date"
+                class="form-control"
+              />
+            </div>
+            <div id="error-start_date" class="error-message"></div>
+          </div>
+
+          <div class="input-box">
+            <label for="end_date" class="form-label">Data de Fim *</label>
+            <div class="input-field">
+              <input
+                type="datetime-local"
+                name="end_date"
+                id="end_date"
+                class="form-control"
+              />
+            </div>
+            <div id="error-end_date" class="error-message"></div>
+          </div>
         </div>
 
-        <form id="form">
-            <div id="input_container">
-
-                <div class="input-box">
-                    <label for="event_name" class="form-label">Nome do Evento *</label>
-                    <div class="input-field">
-                        <input type="text" name="event_name" id="event_name" class="form-control" placeholder="Exemplo de Evento">
-                        <i class="fa-regular fa-calendar"></i>
-                    </div>
-                    <div id="error-event_name" class="error-message"></div>
-                </div>
-
-                <div class="input-box">
-                    <label for="description" class="form-label">Descrição *</label>
-                    <div class="input-field">
-                        <textarea name="description" id="description" class="form-control" placeholder="Descrição do evento"></textarea>
-                        <i class="fa-regular fa-file-alt"></i>
-                    </div>
-                    <div id="error-description" class="error-message"></div>
-                </div>
-
-                <div class="input-box">
-                    <label for="observation" class="form-label">Observação *</label>
-                    <div class="input-field">
-                        <textarea name="observation" id="observation" class="form-control" placeholder="Observações adicionais"></textarea>
-                        <i class="fa-regular fa-sticky-note"></i>
-                    </div>
-                    <div id="error-observation" class="error-message"></div>
-                </div>
-
-                <div class="input-box">
-                    <label for="start_date" class="form-label">Data de Início *</label>
-                    <div class="input-field">
-                        <input type="date" name="start_date" id="start_date" class="form-control">
-                    </div>
-                    <div id="error-start_date" class="error-message"></div>
-                </div>
-
-                <div class="input-box">
-                    <label for="end_date" class="form-label">Data de Fim *</label>
-                    <div class="input-field">
-                        <input type="date" name="end_date" id="end_date" class="form-control">
-                    </div>
-                    <div id="error-end_date" class="error-message"></div>
-                </div>
-
-            </div>
-
-            <button type="submit" class="btn-default">
-                <i class="fa-solid fa-check"></i>
-                Criar Evento
-            </button>
-        </form>
+        <button type="submit" class="btn-default">
+          <i class="fa-solid fa-check"></i>
+          Criar Evento
+        </button>
+      </form>
     </main>
 
     <script src="src/js/scriptCadastro.js"></script>
-</body>
+  </body>
 </html>
