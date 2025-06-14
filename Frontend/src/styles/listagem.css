@@ -1,0 +1,131 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #1d376c;
+}
+
+.container {
+  width: 90%;
+  max-width: 1100px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.header span {
+  font-size: 30px;
+  font-weight: 500;
+  color: #272727;
+  position: relative;
+}
+
+.header span::after {
+    content: '';
+    position: absolute;
+    width: 100px;
+    height: 3px;
+    border-radius: 30px;
+    background-color: #1d376c;
+    left: 0;
+    bottom: 0;
+}
+
+#new {
+  background-color: #1d376c;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+}
+
+#new:hover {
+  background-color: #3c66ba;
+}
+
+.divTable {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background-color: #f8f8f8;
+}
+
+thead th {
+  text-align: left;
+  padding: 12px 8px;
+  font-weight: 500;
+}
+
+tbody td {
+  padding: 10px 8px;
+  border-top: 1px solid #e0e0e0;
+  word-break: break-word;
+}
+
+th.acao, td.acao {
+  text-align: center;
+  width: 80px;
+}
+
+td button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+td button i {
+  font-size: 20px;
+  color: #3b3be4;
+  transition: color 0.2s;
+}
+
+td button i:hover {
+  color: #1a1ab5;
+}
+
+@media (max-width: 700px) {
+  body {
+    font-size: 14px;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  #new {
+    width: 100%;
+  }
+
+  th.acao, td.acao {
+    width: auto;
+  }
+}

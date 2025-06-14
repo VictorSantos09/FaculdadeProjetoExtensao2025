@@ -1,79 +1,44 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Senac - Cadastro Evento</title>
-
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-    <!-- Estilo personalizado -->
-    <link rel="stylesheet" href="src/styles/style.css">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Senac - Listagem Eventos</title>
+  <link rel="stylesheet" href="src/styles/listagem.css">
+  <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
 </head>
+
 <body>
-    <main id="form_container">
-        <div id="form_header">
-            <h1 id="form_title">Criar Evento</h1>
-            <button class="btn-default">
-                <i class="fa-solid fa-right-to-bracket"></i>
-            </button>
-        </div>
+  <div class="container">
+    <div class="header">
+      <span>Cadastro de Eventos</span>
+      <button onclick="window.location.href='cadastro.html'" id="new">Novo Evento</button>
+    </div>
 
-        <form action="" id="form">
-            <div id="input_container">
-                <div class="input-box">
-                    <label for="event_name" class="form-label">Nome do Evento</label>
-                    <div class="input-field">
-                        <input type="text" name="event_name" id="event_name" class="form-control" placeholder="Exemplo de Evento">
-                        <i class="fa-regular fa-calendar"></i>
-                    </div>
-                    <div class="error-message" id="error-event_name"></div>
-                </div>
+    <div class="divTable">
+      <table>
+        <thead>
+          <tr>
+            <th>Nome do Evento</th>
+            <th>Descrição</th>
+            <th>Data Início</th>
+            <th>Data Fim</th>
+            <th class="acao">Editar</th>
+            <td class="acao">
+              <button onclick="excluirEvento(123)"><i class='bx bxs-trash'></i></button>
+            </td>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Linhas de eventos geradas por JS -->
+        </tbody>
+      </table>
+    </div>
+  </div>
 
-                <div class="input-box">
-                    <label for="description" class="form-label">Descrição</label>
-                    <div class="input-field">
-                        <textarea name="description" id="description" class="form-control" placeholder="Descrição do evento"></textarea>
-                        <i class="fa-regular fa-file-alt"></i>
-                    </div>
-                    <div class="error-message" id="error-description"></div>
-                </div>
-
-                <div class="input-box">
-                    <label for="observation" class="form-label">Observação</label>
-                    <div class="input-field">
-                        <textarea name="observation" id="observation" class="form-control" placeholder="Observações adicionais"></textarea>
-                        <i class="fa-regular fa-sticky-note"></i>
-                    </div>
-                    <div class="error-message" id="error-observation"></div>
-                </div>
-
-                <div class="input-box">
-                    <label for="start_date" class="form-label">Data de Início</label>
-                    <div class="input-field">
-                        <input type="date" name="start_date" id="start_date" class="form-control">
-                    </div>
-                    <div class="error-message" id="error-start_date"></div>
-                </div>
-
-                <div class="input-box">
-                    <label for="end_date" class="form-label">Data de Fim</label>
-                    <div class="input-field">
-                        <input type="date" name="end_date" id="end_date" class="form-control">
-                    </div>
-                    <div class="error-message" id="error-end_date"></div>
-                </div>
-            </div>
-
-            <button type="submit" class="btn-default">
-                <i class="fa-solid fa-check"></i>
-                Criar Evento
-            </button>
-        </form>
-    </main>
-
-    <!-- Validação e envio -->
-    <script src="index.js"></script>
+  <script src="src/js/scriptListagem.js"></script>
 </body>
+
 </html>
