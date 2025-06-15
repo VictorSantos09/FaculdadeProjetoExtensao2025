@@ -9,6 +9,7 @@ using Evento.Entities;
 
 namespace Evento.Repositories.Interfaces;
 
-public interface IEVENTOS_REPOSITORY : IEVENTOS_REPOSITORY_BASE<EVENTOS>
+public interface IPESSOAS_REPOSITORY : IPESSOAS_REPOSITORY_BASE<PESSOAS>
 {
+    Task<PESSOAS?> GetByCPF(string cpf);
 }

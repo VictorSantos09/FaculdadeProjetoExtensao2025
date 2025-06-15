@@ -6,7 +6,7 @@ using Evento.Entities.Base;
 
 namespace Evento.Repositories.Base.Interfaces;
 
-public interface IEVENTOS_REPOSITORY_BASE<T> where T : EVENTOS_BASE
+public interface IPESSOAS_REPOSITORY_BASE<T> where T : PESSOAS_BASE
 {
     Task<IEnumerable<T>> GetAllAsync();
     Task<T?> GetByIdAsync(int id);

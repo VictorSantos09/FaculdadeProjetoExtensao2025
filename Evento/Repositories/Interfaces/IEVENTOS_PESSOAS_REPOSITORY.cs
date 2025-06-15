@@ -9,6 +9,7 @@ using Evento.Entities;
 
 namespace Evento.Repositories.Interfaces;
 
-public interface IEVENTOS_REPOSITORY : IEVENTOS_REPOSITORY_BASE<EVENTOS>
+public interface IEVENTOS_PESSOAS_REPOSITORY : IEVENTOS_PESSOAS_REPOSITORY_BASE<EVENTOS_PESSOAS>
 {
+    Task<EVENTOS_PESSOAS?> GetByEventoPessoaAsync(int idPessoa, int idEvento);
 }

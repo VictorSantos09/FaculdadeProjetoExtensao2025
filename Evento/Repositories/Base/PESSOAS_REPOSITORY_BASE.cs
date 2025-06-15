@@ -10,45 +10,41 @@ using Evento.Repositories.Base.Shared;
 
 namespace Evento.Repositories.Base;
 
-public abstract class EVENTOS_REPOSITORY_BASE<T> : REPOSITORY, IEVENTOS_REPOSITORY_BASE<T> where T : EVENTOS_BASE
+public abstract class PESSOAS_REPOSITORY_BASE<T> : REPOSITORY, IPESSOAS_REPOSITORY_BASE<T> where T : PESSOAS_BASE
 {
-    public EVENTOS_REPOSITORY_BASE(IDbConnection connection) : base(connection)
+    public PESSOAS_REPOSITORY_BASE(IDbConnection connection) : base(connection)
     {
     }
 
     public virtual async Task<IEnumerable<T>> GetAllAsync()
     {
-        var sql = $"SELECT * FROM eventos";
+        var sql = $"SELECT * FROM pessoas";
         return await _connection.QueryAsync<T>(sql);
     }
 
     public virtual async Task<T?> GetByIdAsync(int id)
     {
-        var sql = $"SELECT * FROM eventos WHERE ID = @id";
+        var sql = $"SELECT * FROM pessoas WHERE ID = @id";
         return await _connection.QuerySingleOrDefaultAsync<T>(sql, new { id });
     }
 
     public virtual async Task AddAsync(T parameters)
     {
-        var sql = @"INSERT INTO eventos (
+        var sql = @"INSERT INTO pessoas (
                                 ID,
                                 NOME,
-                                DESCRICAO,
-                                OBSERVACAO,
-                                DATA_INICIO,
-                                DATA_FIM,
-                                CAMINHO_QR_CODE,
+                                DATA_NASCIMENTO,
+                                CPF,
+                                EMAIL,
                                 CREATED_AT,
                                 UPDATED_AT
                                 ) 
                                 VALUES (
                                 @ID,
                                 @NOME,
-                                @DESCRICAO,
-                                @OBSERVACAO,
-                                @DATA_INICIO,
-                                @DATA_FIM,
-                                @CAMINHO_QR_CODE,
+                                @DATA_NASCIMENTO,
+                                @CPF,
+                                @EMAIL,
                                 @CREATED_AT,
                                 @UPDATED_AT
                                 )";
@@ -58,14 +54,12 @@ public abstract class EVENTOS_REPOSITORY_BASE<T> : REPOSITORY, IEVENTOS_REPOSITO
 
     public virtual async Task UpdateAsync(int id, T parameters)
     {
-        var sql = @"UPDATE eventos SET
+        var sql = @"UPDATE pessoas SET
         ID = @ID,
         NOME = @NOME,
-        DESCRICAO = @DESCRICAO,
-        OBSERVACAO = @OBSERVACAO,
-        DATA_INICIO = @DATA_INICIO,
-        DATA_FIM = @DATA_FIM,
-        CAMINHO_QR_CODE = @CAMINHO_QR_CODE,
+        DATA_NASCIMENTO = @DATA_NASCIMENTO,
+        CPF = @CPF,
+        EMAIL = @EMAIL,
         CREATED_AT = @CREATED_AT,
         UPDATED_AT = @UPDATED_AT
         WHERE ID = @id";
@@ -75,7 +69,7 @@ public abstract class EVENTOS_REPOSITORY_BASE<T> : REPOSITORY, IEVENTOS_REPOSITO
 
     public virtual async Task<int> DeleteAsync(int id)
     {
-        var sql = $"DELETE FROM eventos WHERE ID = @id";
+        var sql = $"DELETE FROM pessoas WHERE ID = @id";
         return await _connection.ExecuteAsync(sql, new { id });
     }
 }
