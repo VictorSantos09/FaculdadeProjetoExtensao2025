@@ -1,7 +1,7 @@
 ﻿using Evento.Repositories.Interfaces;
 using Evento.Shared.Types;
 
-namespace Evento.Services.Presenca;
+namespace Evento.Services.Evento.Presenca;
 
 public class ConfirmarPresencaService : IConfirmarPresencaService
 {

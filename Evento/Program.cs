@@ -1,10 +1,12 @@
 using Evento.Repositories;
 using Evento.Repositories.Interfaces;
-using Evento.Services.Cadastro;
 using MySql.Data.MySqlClient;
 using System.Data;
 using FluentValidation;
-using Evento.Services.Presenca;
+using Evento.Services.Evento.Cadastro;
+using Evento.Services.Evento.Presenca;
+using Evento.Services.Pessoa;
+using Evento.Services.EventoPessoa;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,6 +36,8 @@ builder.Services.AddScoped<IDbConnection>(s =>
 builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
 
 builder.Services.AddScoped<IEventoCadastroService, EventoCadastroService>();
+builder.Services.AddScoped<IPessoaService, PessoaService>();
+builder.Services.AddScoped<IEventoPessoaService, EventoPessoaService>();
 builder.Services.AddScoped<IConfirmarPresencaService, ConfirmarPresencaService>();
 builder.Services.AddScoped<IPESSOAS_REPOSITORY, PESSOAS_REPOSITORY>();
 builder.Services.AddScoped<IEVENTOS_PESSOAS_REPOSITORY, EVENTOS_PESSOAS_REPOSITORY>();

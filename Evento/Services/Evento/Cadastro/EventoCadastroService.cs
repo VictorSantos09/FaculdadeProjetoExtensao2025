@@ -3,7 +3,7 @@ using Evento.Repositories.Interfaces;
 using Evento.Shared.Types;
 using Evento.Validators;
 
-namespace Evento.Services.Cadastro;
+namespace Evento.Services.Evento.Cadastro;
 
 public class EventoCadastroService : IEventoCadastroService
 {

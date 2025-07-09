@@ -1,6 +1,6 @@
 ﻿using Evento.Repositories.Interfaces;
-using Evento.Services.Cadastro;
-using Evento.Services.Presenca;
+using Evento.Services.Evento.Cadastro;
+using Evento.Services.Evento.Presenca;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Evento.Controllers;
