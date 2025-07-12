@@ -1,0 +1,83 @@
+﻿@page "/pessoas"
+@inject DialogService DialogService
+@inject NotificationService NotificationService
+@inject IPESSOAS_REPOSITORY pessoa_repository
+
+<h3>Pessoas</h3>
+
+<RadzenButton Icon="add_circle" Style="margin-bottom: 10px" Text="Novo" Click="Novo" ButtonStyle="ButtonStyle.Primary" />
+
+<RadzenDataGrid @ref="grid" Data="@pessoas" TItem="PESSOAS" RowSelect="Editar" AllowFiltering="true" AllowPaging="true" PageSize="5" AllowSorting="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Responsive="true" ShowPagingSummary="true" EditMode="DataGridEditMode.Single">
+
+    <Columns>
+        <RadzenDataGridColumn TItem="PESSOAS" Property="ID" Title="ID" Width="50px" />
+        <RadzenDataGridColumn TItem="PESSOAS" Property="NOME" Title="Nome" />
+        <RadzenDataGridColumn TItem="PESSOAS" Property="DATA_NASCIMENTO" Title="Nascimento" FormatString="{0:dd/MM/yyyy}" />
+        <RadzenDataGridColumn TItem="PESSOAS" Property="CPF" Title="CPF" />
+        <RadzenDataGridColumn TItem="PESSOAS" Property="EMAIL" Title="Email" />
+        <RadzenDataGridColumn TItem="PESSOAS" Context="p" Width="120px" Title="Ações">
+            <Template Context="p">
+                <RadzenButton Icon="edit" Size="ButtonSize.Small" Style="margin-right: 5px" Click="@(args => Editar(p))" />
+                <RadzenButton Icon="delete" ButtonStyle="ButtonStyle.Danger" Size="ButtonSize.Small" Click="@(args => Excluir(p))" />
+            </Template>
+        </RadzenDataGridColumn>
+    </Columns>
+</RadzenDataGrid>
+
+@code {
+    private RadzenDataGrid<PESSOAS>? grid;
+    private List<PESSOAS> pessoas = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        pessoas = (await pessoa_repository.GetAllAsync()).ToList();
+    }
+
+    async Task Novo()
+    {
+        var pessoa = new PESSOAS { DATA_NASCIMENTO = DateTime.Today };
+        var result = await DialogService.OpenAsync<PessoaForm>("Nova Pessoa", options: new DialogOptions() { Width = "400px", Height = "400px" });
+        if (result is PESSOAS novaPessoa)
+        {
+            novaPessoa.ID = pessoas.Any() ? pessoas.Max(x => x.ID) + 1 : 1;
+            pessoas.Add(novaPessoa);
+            await grid!.Reload();
+            NotificationService.Notify(NotificationSeverity.Success, "Sucesso", "Pessoa cadastrada");
+        }
+    }
+
+    async Task Editar(PESSOAS pessoa)
+    {
+        var pessoaCopy = new PESSOAS
+        {
+            ID = pessoa.ID,
+            NOME = pessoa.NOME,
+            DATA_NASCIMENTO = pessoa.DATA_NASCIMENTO,
+            CPF = pessoa.CPF,
+            EMAIL = pessoa.EMAIL
+        };
+
+        var result = await DialogService.OpenAsync<PessoaForm>("Editar Pessoa", new Dictionary<string, object> { { "Pessoa", pessoaCopy } }, new DialogOptions() { Width = "400px", Height = "400px" });
+        if (result is PESSOAS pessoaEditada)
+        {
+            var index = pessoas.FindIndex(x => x.ID == pessoaEditada.ID);
+            if (index != -1)
+            {
+                pessoas[index] = pessoaEditada;
+                await grid!.Reload();
+                NotificationService.Notify(NotificationSeverity.Success, "Sucesso", "Pessoa atualizada");
+            }
+        }
+    }
+
+    async Task Excluir(PESSOAS pessoa)
+    {
+        bool? confirm = await DialogService.Confirm($"Deseja excluir a pessoa '{pessoa.NOME}'?", "Confirmação");
+        if (confirm == true)
+        {
+            pessoas.Remove(pessoa);
+            await grid!.Reload();
+            NotificationService.Notify(NotificationSeverity.Success, "Sucesso", "Pessoa excluída");
+        }
+    }
+}
