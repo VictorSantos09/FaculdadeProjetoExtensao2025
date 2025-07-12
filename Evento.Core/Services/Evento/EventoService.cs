@@ -1,6 +1,7 @@
 ﻿using Evento.Core.Entities;
 using Evento.Core.Repositories.Interfaces;
 using Evento.Core.Services.Evento.DTO;
+using Evento.Core.Services.Imagem;
 using Evento.Core.Shared.Types;
 using Evento.Core.Validators;
 
@@ -8,7 +9,8 @@ namespace Evento.Core.Services.Evento;
 internal class EventoService(IEVENTOS_REPOSITORY eventos_repository,
                      EventoCadastrarValidator validator,
                      IEVENTOS_PESSOAS_REPOSITORY eventos_pessoas_repository,
-                     IPESSOAS_REPOSITORY pessoas_repository) : IEventoService
+                     IPESSOAS_REPOSITORY pessoas_repository,
+                     IImagemService imagemService) : IEventoService
 {
     public async Task<IFinal> CadastrarAsync(EVENTOS evento)
     {
@@ -57,5 +59,17 @@ internal class EventoService(IEVENTOS_REPOSITORY eventos_repository,
     public async Task UpdateAsync(EVENTOS evento)
     {
         await eventos_repository.UpdateAsync(evento.ID, evento);
+    }
+
+    public async Task<IEnumerable<EVENTOS>> GetAllAsync()
+    {
+        var eventos = await eventos_repository.GetAllAsync();
+
+        foreach (var e in eventos)
+        {
+            e.Image = await imagemService.GetImagemOnDisk(e.CAMINHO_QR_CODE);
+        }
+
+        return eventos;
     }
 }

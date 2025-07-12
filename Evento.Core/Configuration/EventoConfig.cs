@@ -2,6 +2,7 @@
 using Evento.Core.Repositories.Interfaces;
 using Evento.Core.Services.Evento;
 using Evento.Core.Services.EventoPessoa;
+using Evento.Core.Services.Imagem;
 using Evento.Core.Services.Pessoa;
 using FluentValidation;
 using Microsoft.Extensions.Configuration;
@@ -28,6 +29,7 @@ public static class EventoConfig
         services.AddScoped<IPESSOAS_REPOSITORY, PESSOAS_REPOSITORY>();
         services.AddScoped<IEVENTOS_PESSOAS_REPOSITORY, EVENTOS_PESSOAS_REPOSITORY>();
         services.AddScoped<IEVENTOS_REPOSITORY, EVENTOS_REPOSITORY>();
+        services.AddScoped<IImagemService, ImagemService>();
 
         return services;
     }

@@ -1,7 +1,6 @@
 ﻿@page "/eventos"
 @inject DialogService DialogService
 @inject NotificationService NotificationService
-@inject IEVENTOS_REPOSITORY EventoRepository
 @inject IEventoService EventoService
 
 <h3>Eventos</h3>
@@ -18,7 +17,10 @@
         <RadzenDataGridColumn TItem="EVENTOS" Property="DATA_FIM" Title="Fim" FormatString="{0:dd/MM/yyyy}" />
         <RadzenDataGridColumn TItem="EVENTOS" Title="QR Code">
             <Template Context="e">
-                @* <img src="@e.CAMINHO_QR_CODE" alt="QR Code" style="max-width: 60px;" /> *@
+                <RadzenImage Path="@($"data:image/jpeg;base64,{e.Image.Imagem}")"
+                             AlternateText="QR Code"
+                             Style="width: 50px; height: 50px;"
+                             Click="@(args => AbrirQrCode(e.Image.Imagem, e.NOME))" />
             </Template>
         </RadzenDataGridColumn>
         <RadzenDataGridColumn TItem="EVENTOS" Context="e" Width="120px" Title="Ações">
@@ -36,7 +38,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        eventos = (await EventoRepository.GetAllAsync()).ToList();
+        eventos = (await EventoService.GetAllAsync()).ToList();
     }
 
     async Task Novo()
@@ -92,5 +94,17 @@
             await grid!.Reload();
             NotificationService.Notify(NotificationSeverity.Success, "Sucesso", "Evento excluído");
         }
+    }
+
+    async Task AbrirQrCode(string base64, string nomeEvento)
+    {
+        await DialogService.OpenAsync<QrCodeViewer>(
+            nomeEvento,
+            new Dictionary<string, object> { { "ImageBase64", base64 } },
+            new DialogOptions { Width = "40%", Height = "40%", CloseDialogOnOverlayClick = true,
+                                                                    CloseDialogOnEsc = true,
+                                                                    Resizable = true,
+                                                                    Draggable = true }
+        );
     }
 }

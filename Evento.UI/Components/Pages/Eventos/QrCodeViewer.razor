@@ -1,0 +1,11 @@
+﻿@inject DialogService DialogService
+
+<div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+    <RadzenImage Path="@($"data:image/jpeg;base64,{ImageBase64}")"
+                 AlternateText="QR Code"
+                 Style="width: auto; height: auto; "/>
+</div>
+
+@code {
+    [Parameter] public string ImageBase64 { get; set; } = string.Empty;
+}
