@@ -7,7 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRadzenComponents();
 
 // Add services to the container.
-builder.Services.AddRazorComponents()
+builder.Services.AddRazorComponents(options =>
+    options.DetailedErrors = builder.Environment.IsDevelopment())
     .AddInteractiveServerComponents();
 
 

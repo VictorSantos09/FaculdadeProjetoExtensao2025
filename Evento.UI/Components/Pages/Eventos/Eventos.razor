@@ -19,7 +19,7 @@
             <Template Context="e">
                 <RadzenImage Path="@($"data:image/jpeg;base64,{e.Image.Imagem}")"
                              AlternateText="QR Code"
-                             Style="width: 50px; height: 50px;"
+                             Style="width: 50px; height: auto;"
                              Click="@(args => AbrirQrCode(e.Image.Imagem, e.NOME))" />
             </Template>
         </RadzenDataGridColumn>
@@ -101,7 +101,7 @@
         await DialogService.OpenAsync<QrCodeViewer>(
             nomeEvento,
             new Dictionary<string, object> { { "ImageBase64", base64 } },
-            new DialogOptions { Width = "40%", Height = "40%", CloseDialogOnOverlayClick = true,
+            new DialogOptions { Width = "40%", Height = "auto", CloseDialogOnOverlayClick = true,
                                                                     CloseDialogOnEsc = true,
                                                                     Resizable = true,
                                                                     Draggable = true }

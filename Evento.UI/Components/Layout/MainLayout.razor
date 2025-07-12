@@ -19,9 +19,37 @@
         </RadzenPanelMenu>
     </RadzenSidebar>
     <RadzenBody>
-        <div class="rz-p-4">
-            @Body
-        </div>
+        <ErrorBoundary @ref="errorBoundary">
+            <ChildContent>
+                @Body
+            </ChildContent>
+            <ErrorContent>
+                <RadzenStack class="rz-background-color-danger rz-p-5 rz-shadow-md">
+                    <RadzenStack Gap="0.1rem">
+                        <RadzenText Text="Oops, algo deu errado!" TextStyle="TextStyle.H3" />
+                        <RadzenText Text="Message" TextStyle="TextStyle.H5" />
+                        <RadzenText Text="@context.Message" TextStyle="TextStyle.Body1" />
+
+                        @if (showStackTrace)
+                        {
+                            <RadzenStack Gap="0.1rem">
+                                <RadzenText Text="Source" TextStyle="TextStyle.H5" />
+                                <RadzenText Text="@context.Source" TextStyle="TextStyle.Body1" />
+                                <RadzenText Text="StackTrace" TextStyle="TextStyle.H5" />
+                                <RadzenText Text="@context.StackTrace" TextStyle="TextStyle.Body1" />
+                            </RadzenStack>
+                        }
+
+                        <RadzenStack Orientation="Orientation.Horizontal">
+                            <RadzenButton Text="@(showStackTrace ? "Ocultar Detalhes" : "Mostrar Detalhes")"
+                                          ButtonStyle="ButtonStyle.Secondary"
+                                          Click="@(() => showStackTrace = !showStackTrace)" />
+                            <RadzenButton Text="Tentar novamente" ButtonStyle="ButtonStyle.Primary" ButtonType="ButtonType.Reset" Icon="sync_problem" Click="@(() => errorBoundary?.Recover())" />
+                        </RadzenStack>
+                    </RadzenStack>
+                </RadzenStack>
+            </ErrorContent>
+        </ErrorBoundary>
     </RadzenBody>
     <RadzenFooter>
         Footer
@@ -32,4 +60,11 @@
 
 @code {
     bool sidebarExpanded = true;
+    private bool showStackTrace = true;
+    private ErrorBoundary? errorBoundary;
+
+    protected override void OnParametersSet()
+    {
+        errorBoundary?.Recover();
+    }
 }

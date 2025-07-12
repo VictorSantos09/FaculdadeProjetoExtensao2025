@@ -1,7 +1,9 @@
-﻿using Evento.Core.Entities;
+﻿using BancoTalentos.Domain.Services.Imagem.Dto;
+using Evento.Core.Entities;
 using Evento.Core.Repositories.Interfaces;
 using Evento.Core.Services.Evento.DTO;
 using Evento.Core.Services.Imagem;
+using Evento.Core.Services.QrCode;
 using Evento.Core.Shared.Types;
 using Evento.Core.Validators;
 
@@ -12,22 +14,24 @@ internal class EventoService(IEVENTOS_REPOSITORY eventos_repository,
                      IPESSOAS_REPOSITORY pessoas_repository,
                      IImagemService imagemService) : IEventoService
 {
+    const string FILE_NAME = "qrcode.png";
     public async Task<IFinal> CadastrarAsync(EVENTOS evento)
     {
-        try
-        {
-            await validator.ValidateAsync(evento);
-            evento.CREATED_AT = DateTime.Now;
-            evento.CAMINHO_QR_CODE = Path.Combine(EVENTOS.BASE_PATH_QR_CODE, $"{Guid.NewGuid()}");
+        await validator.ValidateAsync(evento);
+        evento.CREATED_AT = DateTime.Now;
 
-            await eventos_repository.AddAsync(evento);
-
-            return Result.Success();
-        }
-        catch (Exception)
+        ImagemBase64DTO dto = new()
         {
-            throw;
-        }
+            FileName = FILE_NAME,
+            Image = QrCodeService.GenerateBase64($"http://localhost:7165/confirmacaoEvento?id={evento.ID}", 10),
+        };
+        await imagemService.ArmazenarImagemOnDiskAsync(dto);
+
+        evento.CAMINHO_QR_CODE = dto.FileName;
+
+        await eventos_repository.AddAsync(evento);
+
+        return Result.Success();
     }
 
     public async Task<IFinal> ConfirmarAsync(ConfirmarPresencaDTO dto)

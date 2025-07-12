@@ -6,13 +6,13 @@ namespace Evento.Core.Services.Imagem;
 
 internal class ImagemService : IImagemService
 {
-    public async Task<string> ArmazenarFotoPerfilOnDiskAsync(ImagemBase64DTO dto, CancellationToken cancellationToken = default)
+    public async Task<string> ArmazenarImagemOnDiskAsync(ImagemBase64DTO dto, CancellationToken cancellationToken = default)
     {
-        dto.FileName = $"{Guid.NewGuid()}{"_fotoPerfil"}__{dto.FileName}";
+        dto.FileName = $"{Guid.NewGuid()}__{dto.FileName}";
         return await ArmazenarFotoOnDiskAsync(dto, cancellationToken);
     }
 
-    public string GetPath(string fileName)
+    public static string GetPath(string fileName)
     {
         var path = GetPath();
         path = Path.Combine(path, fileName);

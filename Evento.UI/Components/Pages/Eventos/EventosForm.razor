@@ -21,10 +21,6 @@
         <RadzenLabel Text="Data de Fim" Style="margin-top: 10px" />
         <RadzenDatePicker @bind-Value="Evento.DATA_FIM" Style="width: 100%" DateFormat="dd/MM/yyyy" Name="dataFim" />
         <ValidationMessage For="@(() => Evento.DATA_FIM)" />
-
-        <RadzenLabel Text="QR Code" Style="margin-top: 10px" />
-        <img src="@Evento.CAMINHO_QR_CODE" alt="QR Code" style="max-width: 200px; max-height: 200px;" />
-
     </RadzenFieldset>
 
     <RadzenButton ButtonType="ButtonType.Submit" Text="Salvar" Style="margin-right: 10px" ButtonStyle="ButtonStyle.Primary" />
