@@ -1,5 +1,5 @@
-using Evento.Repositories.Base.Interfaces;
-using Evento.Entities;
+using Evento.Core.Entities;
+using Evento.Core.Repositories.Base.Interfaces;
 
 /*
 	File Auto Generated. This file is only generate once.
@@ -7,7 +7,7 @@ using Evento.Entities;
 	DO NOT MODIFY ONLY THE FILE NAME AND ITS LOCATION
 */
 
-namespace Evento.Repositories.Interfaces;
+namespace Evento.Core.Repositories.Interfaces;
 
 public interface IPESSOAS_REPOSITORY : IPESSOAS_REPOSITORY_BASE<PESSOAS>
 {

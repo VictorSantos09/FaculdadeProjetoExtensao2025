@@ -1,10 +1,11 @@
-using Evento.Entities.Base;
+using Evento.Core.Entities.Base;
+
 
 /*
     File Auto Generated. DO NOT MODIFY.
 */
 
-namespace Evento.Repositories.Base.Interfaces;
+namespace Evento.Core.Repositories.Base.Interfaces;
 
 public interface IEVENTOS_REPOSITORY_BASE<T> where T : EVENTOS_BASE
 {

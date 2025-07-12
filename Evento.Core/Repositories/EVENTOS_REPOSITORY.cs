@@ -1,7 +1,7 @@
 using System.Data;
-using Evento.Repositories.Base;
-using Evento.Repositories.Interfaces;
-using Evento.Entities;
+using Evento.Core.Entities;
+using Evento.Core.Repositories.Base;
+using Evento.Core.Repositories.Interfaces;
 
 /*
 	File Auto Generated. This file is only generate once.
@@ -9,7 +9,7 @@ using Evento.Entities;
 	DO NOT MODIFY ONLY THE FILE NAME AND ITS LOCATION
 */
 
-namespace Evento.Repositories;
+namespace Evento.Core.Repositories;
 
 public class EVENTOS_REPOSITORY : EVENTOS_REPOSITORY_BASE<EVENTOS>, IEVENTOS_REPOSITORY
 {

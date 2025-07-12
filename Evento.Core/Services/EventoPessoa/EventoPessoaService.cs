@@ -1,7 +1,7 @@
-﻿using Evento.Entities;
-using Evento.Repositories.Interfaces;
+﻿using Evento.Core.Entities;
+using Evento.Core.Repositories.Interfaces;
 
-namespace Evento.Services.EventoPessoa;
+namespace Evento.Core.Services.EventoPessoa;
 
 public class EventoPessoaService(IEVENTOS_PESSOAS_REPOSITORY eventos_pessoas_repository) : IEventoPessoaService
 {

@@ -1,14 +1,14 @@
 using Dapper;
 using System.Data;
-using Evento.Entities.Base;
-using Evento.Repositories.Base.Interfaces;
-using Evento.Repositories.Base.Shared;
+using Evento.Core.Repositories.Base.Shared;
+using Evento.Core.Entities.Base;
+using Evento.Core.Repositories.Base.Interfaces;
 
 /*
     File Auto Generated. DO NOT MODIFY.
 */
 
-namespace Evento.Repositories.Base;
+namespace Evento.Core.Repositories.Base;
 
 public abstract class PESSOAS_REPOSITORY_BASE<T> : REPOSITORY, IPESSOAS_REPOSITORY_BASE<T> where T : PESSOAS_BASE
 {

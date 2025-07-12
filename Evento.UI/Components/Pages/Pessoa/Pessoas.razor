@@ -1,13 +1,16 @@
 ﻿@page "/pessoas"
+@using Evento.Core.Entities
+@using Evento.Core.Repositories.Interfaces
 @inject DialogService DialogService
 @inject NotificationService NotificationService
 @inject IPESSOAS_REPOSITORY pessoa_repository
+@inject IPessoaService PessoaService
 
 <h3>Pessoas</h3>
 
 <RadzenButton Icon="add_circle" Style="margin-bottom: 10px" Text="Novo" Click="Novo" ButtonStyle="ButtonStyle.Primary" />
 
-<RadzenDataGrid @ref="grid" Data="@pessoas" TItem="PESSOAS" RowSelect="Editar" AllowFiltering="true" AllowPaging="true" PageSize="5" AllowSorting="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Responsive="true" ShowPagingSummary="true" EditMode="DataGridEditMode.Single">
+<RadzenDataGrid @ref="grid" Data="@pessoas" TItem="PESSOAS" AllowFiltering="true" AllowPaging="true" PageSize="5" AllowSorting="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Responsive="true" ShowPagingSummary="true" EditMode="DataGridEditMode.Single">
 
     <Columns>
         <RadzenDataGridColumn TItem="PESSOAS" Property="ID" Title="ID" Width="50px" />
@@ -36,10 +39,11 @@
     async Task Novo()
     {
         var pessoa = new PESSOAS { DATA_NASCIMENTO = DateTime.Today };
-        var result = await DialogService.OpenAsync<PessoaForm>("Nova Pessoa", options: new DialogOptions() { Width = "400px", Height = "400px" });
+        var result = await DialogService.OpenAsync<PessoaForm>("Nova Pessoa", options: new DialogOptions() { Width = "50%", Height = "50%" });
         if (result is PESSOAS novaPessoa)
         {
             novaPessoa.ID = pessoas.Any() ? pessoas.Max(x => x.ID) + 1 : 1;
+            await PessoaService.CreateAsync(novaPessoa);
             pessoas.Add(novaPessoa);
             await grid!.Reload();
             NotificationService.Notify(NotificationSeverity.Success, "Sucesso", "Pessoa cadastrada");
@@ -64,6 +68,7 @@
             if (index != -1)
             {
                 pessoas[index] = pessoaEditada;
+                await PessoaService.UpdateAsync(pessoaEditada);
                 await grid!.Reload();
                 NotificationService.Notify(NotificationSeverity.Success, "Sucesso", "Pessoa atualizada");
             }
@@ -76,6 +81,7 @@
         if (confirm == true)
         {
             pessoas.Remove(pessoa);
+            await PessoaService.DeleteAsync(pessoa.ID);
             await grid!.Reload();
             NotificationService.Notify(NotificationSeverity.Success, "Sucesso", "Pessoa excluída");
         }

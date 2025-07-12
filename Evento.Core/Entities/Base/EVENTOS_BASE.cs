@@ -1,10 +1,8 @@
-using Evento.Entities.Enums;
-
 /*
     File Auto Generated. DO NOT MODIFY.
 */
 
-namespace Evento.Entities.Base;
+namespace Evento.Core.Entities.Base;
 
 public class EVENTOS_BASE
 {

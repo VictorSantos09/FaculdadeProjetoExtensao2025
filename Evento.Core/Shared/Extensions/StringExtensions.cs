@@ -1,4 +1,4 @@
-﻿namespace Evento.Shared.Extensions;
+﻿namespace Evento.Core.Shared.Extensions;
 
 public static class StringExtensions
 {

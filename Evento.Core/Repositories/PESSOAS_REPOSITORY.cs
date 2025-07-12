@@ -1,7 +1,7 @@
 using Dapper;
-using Evento.Entities;
-using Evento.Repositories.Base;
-using Evento.Repositories.Interfaces;
+using Evento.Core.Entities;
+using Evento.Core.Repositories.Base;
+using Evento.Core.Repositories.Interfaces;
 using System.Data;
 
 /*
@@ -10,7 +10,7 @@ using System.Data;
 	DO NOT MODIFY ONLY THE FILE NAME AND ITS LOCATION
 */
 
-namespace Evento.Repositories;
+namespace Evento.Core.Repositories;
 
 public class PESSOAS_REPOSITORY : PESSOAS_REPOSITORY_BASE<PESSOAS>, IPESSOAS_REPOSITORY
 {

@@ -1,9 +1,9 @@
-﻿using Evento.Entities;
-using Evento.Repositories.Interfaces;
-using Evento.Shared.Types;
-using Evento.Validators;
+﻿using Evento.Core.Entities;
+using Evento.Core.Repositories.Interfaces;
+using Evento.Core.Shared.Types;
+using Evento.Core.Validators;
 
-namespace Evento.Services.Evento.Cadastro;
+namespace Evento.Core.Services.Evento.Cadastro;
 
 public class EventoCadastroService : IEventoCadastroService
 {

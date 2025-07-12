@@ -1,4 +1,5 @@
-using Evento.Entities.Base;
+using Evento.Core.Entities.Base;
+
 
 /*
 	File Auto Generated. This file is only generate once.
@@ -6,7 +7,7 @@ using Evento.Entities.Base;
 	DO NOT MODIFY ONLY THE FILE NAME AND ITS LOCATION
 */
 
-namespace Evento.Entities;
+namespace Evento.Core.Entities;
 
 public class EVENTOS_PESSOAS : EVENTOS_PESSOAS_BASE
 {

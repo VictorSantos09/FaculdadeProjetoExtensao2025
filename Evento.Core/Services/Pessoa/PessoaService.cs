@@ -1,7 +1,7 @@
-﻿using Evento.Entities;
-using Evento.Repositories.Interfaces;
+﻿using Evento.Core.Entities;
+using Evento.Core.Repositories.Interfaces;
 
-namespace Evento.Services.Pessoa;
+namespace Evento.Core.Services.Pessoa;
 
 public class PessoaService(IPESSOAS_REPOSITORY pessoas_repository) : IPessoaService
 {
@@ -17,11 +17,13 @@ public class PessoaService(IPESSOAS_REPOSITORY pessoas_repository) : IPessoaServ
 
     public async Task CreateAsync(PESSOAS pessoa)
     {
+        pessoa.CREATED_AT = DateTime.Now;
         await pessoas_repository.AddAsync(pessoa);
     }
 
     public async Task UpdateAsync(PESSOAS pessoa)
     {
+        pessoa.UPDATED_AT = DateTime.Now;
         await pessoas_repository.UpdateAsync(pessoa.ID, pessoa);
     }
 

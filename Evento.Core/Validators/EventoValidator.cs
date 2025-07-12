@@ -1,8 +1,8 @@
-﻿using Evento.Entities;
-using Evento.Shared.Types;
+﻿using Evento.Core.Entities;
+using Evento.Core.Shared.Types;
 using FluentValidation;
 
-namespace Evento.Validators
+namespace Evento.Core.Validators
 {
     public class EventoCadastrarValidator : AbstractValidator<EVENTOS>
     {

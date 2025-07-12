@@ -1,9 +1,9 @@
-﻿using Evento.Repositories;
-using Evento.Repositories.Interfaces;
-using Evento.Services.Evento.Cadastro;
-using Evento.Services.Evento.Presenca;
-using Evento.Services.EventoPessoa;
-using Evento.Services.Pessoa;
+﻿using Evento.Core.Repositories;
+using Evento.Core.Repositories.Interfaces;
+using Evento.Core.Services.Evento.Cadastro;
+using Evento.Core.Services.Evento.Presenca;
+using Evento.Core.Services.EventoPessoa;
+using Evento.Core.Services.Pessoa;
 using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

@@ -1,7 +1,7 @@
-﻿using Evento.Shared.Types;
+﻿using Evento.Core.Shared.Types;
 using FluentValidation.Results;
 
-namespace Evento.Shared.Extensions;
+namespace Evento.Core.Shared.Extensions;
 
 public static class FluentValidationExtensions
 {

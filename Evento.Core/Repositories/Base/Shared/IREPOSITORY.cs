@@ -1,7 +1,7 @@
 using System.Data;
-using Evento.Entities.Enums;
+using Evento.Core.Entities.Enums;
 
-namespace Evento.Repositories.Base.Shared;
+namespace Evento.Core.Repositories.Base.Shared;
 
 public interface IREPOSITORY
 {

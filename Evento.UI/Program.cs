@@ -4,11 +4,12 @@ using Radzen;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddRadzenComponents();
+
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-builder.Services.AddRadzenComponents();
 
 builder.Services.AddEventoCore(builder.Configuration);
 

@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
 
-namespace Evento.Shared.Types;
+namespace Evento.Core.Shared.Types;
 
 public class ValidationFailureCustom
 {

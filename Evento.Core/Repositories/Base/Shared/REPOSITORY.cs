@@ -1,6 +1,7 @@
 using System.Data;
 using Dapper;
-using Evento.Entities.Enums;
+using Evento.Core.Entities.Enums;
+
 
 /*
     File Auto Generated. This file is only generate once.
@@ -13,7 +14,7 @@ using Evento.Entities.Enums;
     If not found, it will be recreated and you may lose any modifications you have made.
 */
 
-namespace Evento.Repositories.Base.Shared;
+namespace Evento.Core.Repositories.Base.Shared;
 
 public abstract class REPOSITORY : IREPOSITORY
 {

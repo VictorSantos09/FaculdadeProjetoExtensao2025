@@ -1,7 +1,7 @@
 ﻿using FluentValidation.Results;
 using System.Collections.Immutable;
 
-namespace Evento.Shared.Types;
+namespace Evento.Core.Shared.Types;
 
 public class Result(object? data, bool isSuccess, IEnumerable<ValidationFailureCustom>? failures) : Final<object>(data, isSuccess, failures)
 {

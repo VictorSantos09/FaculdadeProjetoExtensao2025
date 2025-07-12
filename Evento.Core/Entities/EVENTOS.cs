@@ -1,9 +1,9 @@
-using Evento.Entities.Base;
-using Evento.Shared.Extensions;
-using Evento.Shared.Types;
-using Evento.Validators;
+using Evento.Core.Entities.Base;
+using Evento.Core.Shared.Extensions;
+using Evento.Core.Shared.Types;
+using Evento.Core.Validators;
 
-namespace Evento.Entities;
+namespace Evento.Core.Entities;
 
 public class EVENTOS : EVENTOS_BASE
 {

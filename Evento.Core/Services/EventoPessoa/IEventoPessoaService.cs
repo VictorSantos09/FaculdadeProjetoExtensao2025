@@ -1,6 +1,6 @@
-﻿using Evento.Entities;
+﻿using Evento.Core.Entities;
 
-namespace Evento.Services.EventoPessoa;
+namespace Evento.Core.Services.EventoPessoa;
 public interface IEventoPessoaService
 {
     Task CreateAsync(EVENTOS_PESSOAS eventoPessoa);

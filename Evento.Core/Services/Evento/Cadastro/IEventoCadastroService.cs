@@ -1,6 +1,6 @@
-﻿using Evento.Shared.Types;
+﻿using Evento.Core.Shared.Types;
 
-namespace Evento.Services.Evento.Cadastro;
+namespace Evento.Core.Services.Evento.Cadastro;
 
 public interface IEventoCadastroService
 {

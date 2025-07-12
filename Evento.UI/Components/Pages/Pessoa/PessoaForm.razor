@@ -1,30 +1,30 @@
-﻿@inject DialogService DialogService
+﻿@using Evento.Core.Entities
+@inject DialogService DialogService
 
-<EditForm Model="@Pessoa" OnValidSubmit="Salvar">
+<RadzenTemplateForm TItem="PESSOAS" Data="@Pessoa" Submit="@Salvar">
     <DataAnnotationsValidator />
-    <RadzenTemplateForm TItem="PESSOAS" Data="@Pessoa" Context="formContext">
-        <RadzenFieldset Text="Dados da Pessoa" Style="margin-bottom: 15px">
-            <RadzenLabel Text="Nome" />
-            <RadzenTextBox @bind-Value="Pessoa.NOME" Style="width: 100%" Name="nome" />
-            <ValidationMessage For="@(() => Pessoa.NOME)" />
 
-            <RadzenLabel Text="Data de Nascimento" Style="margin-top: 10px" />
-            <RadzenDatePicker @bind-Value="Pessoa.DATA_NASCIMENTO" Style="width: 100%" Name="dataNascimento" DateFormat="dd/MM/yyyy" />
-            <ValidationMessage For="@(() => Pessoa.DATA_NASCIMENTO)" />
+    <RadzenFieldset Text="Dados da Pessoa" Style="margin-bottom: 15px">
+        <RadzenLabel Text="Nome" />
+        <RadzenTextBox @bind-Value="Pessoa.NOME" Style="width: 100%" Name="nome" />
+        <ValidationMessage For="@(() => Pessoa.NOME)" />
 
-            <RadzenLabel Text="CPF" Style="margin-top: 10px" />
-            <RadzenTextBox @bind-Value="Pessoa.CPF" Style="width: 100%" Name="cpf" />
-            <ValidationMessage For="@(() => Pessoa.CPF)" />
+        <RadzenLabel Text="Data de Nascimento" Style="margin-top: 10px" />
+        <RadzenDatePicker @bind-Value="Pessoa.DATA_NASCIMENTO" Style="width: 100%" Name="dataNascimento" DateFormat="dd/MM/yyyy" />
+        <ValidationMessage For="@(() => Pessoa.DATA_NASCIMENTO)" />
 
-            <RadzenLabel Text="Email" Style="margin-top: 10px" />
-            <RadzenTextBox @bind-Value="Pessoa.EMAIL" Style="width: 100%" Name="email" />
-            <ValidationMessage For="@(() => Pessoa.EMAIL)" />
-        </RadzenFieldset>
+        <RadzenLabel Text="CPF" Style="margin-top: 10px" />
+        <RadzenTextBox @bind-Value="Pessoa.CPF" Style="width: 100%" Name="cpf" />
+        <ValidationMessage For="@(() => Pessoa.CPF)" />
 
-        <RadzenButton ButtonType="ButtonType.Submit" Text="Salvar" Style="margin-right: 10px" ButtonStyle="ButtonStyle.Primary" />
-        <RadzenButton Text="Cancelar" ButtonStyle="ButtonStyle.Secondary" Click="@Cancelar" />
-    </RadzenTemplateForm>
-</EditForm>
+        <RadzenLabel Text="Email" Style="margin-top: 10px" />
+        <RadzenTextBox @bind-Value="Pessoa.EMAIL" Style="width: 100%" Name="email" />
+        <ValidationMessage For="@(() => Pessoa.EMAIL)" />
+    </RadzenFieldset>
+
+    <RadzenButton ButtonType="ButtonType.Submit" Text="Salvar" Style="margin-right: 10px" ButtonStyle="ButtonStyle.Primary" />
+    <RadzenButton Text="Cancelar" ButtonStyle="ButtonStyle.Secondary" Click="@Cancelar" />
+</RadzenTemplateForm>
 
 @code {
     [Parameter] public PESSOAS Pessoa { get; set; } = new();
@@ -34,8 +34,8 @@
         DialogService.Close(null);
     }
 
-    void Salvar()
+    void Salvar(PESSOAS p)
     {
-        DialogService.Close(Pessoa);
+        DialogService.Close(p);
     }
 }
