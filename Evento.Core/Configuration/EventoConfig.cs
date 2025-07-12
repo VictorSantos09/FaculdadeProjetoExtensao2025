@@ -1,7 +1,5 @@
 ﻿using Evento.Core.Repositories;
 using Evento.Core.Repositories.Interfaces;
-using Evento.Core.Services.Evento.Cadastro;
-using Evento.Core.Services.Evento.Presenca;
 using Evento.Core.Services.EventoPessoa;
 using Evento.Core.Services.Pessoa;
 using FluentValidation;
@@ -22,10 +20,9 @@ public static class EventoConfig
 
         services.AddValidatorsFromAssembly(typeof(EventoConfig).Assembly);
 
-        services.AddScoped<IEventoCadastroService, EventoCadastroService>();
+        services.AddScoped<IEventoPessoaService, EventoPessoaService>();
         services.AddScoped<IPessoaService, PessoaService>();
         services.AddScoped<IEventoPessoaService, EventoPessoaService>();
-        services.AddScoped<IConfirmarPresencaService, ConfirmarPresencaService>();
         services.AddScoped<IPESSOAS_REPOSITORY, PESSOAS_REPOSITORY>();
         services.AddScoped<IEVENTOS_PESSOAS_REPOSITORY, EVENTOS_PESSOAS_REPOSITORY>();
         services.AddScoped<IEVENTOS_REPOSITORY, EVENTOS_REPOSITORY>();
