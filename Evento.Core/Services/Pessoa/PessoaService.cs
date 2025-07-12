@@ -18,6 +18,7 @@ public class PessoaService(IPESSOAS_REPOSITORY pessoas_repository) : IPessoaServ
     public async Task CreateAsync(PESSOAS pessoa)
     {
         pessoa.CREATED_AT = DateTime.Now;
+        pessoa.CPF = pessoa.CPF.Replace(".", "").Replace("-", "").Trim();
         await pessoas_repository.AddAsync(pessoa);
     }
 

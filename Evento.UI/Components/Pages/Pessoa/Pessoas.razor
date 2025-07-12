@@ -1,6 +1,7 @@
 ﻿@page "/pessoas"
-@using Evento.Core.Entities
-@using Evento.Core.Repositories.Interfaces
+@using global::Evento.Core.Repositories.Interfaces
+@using global::Evento.Core.Services.Pessoa
+@using global::Evento.Core.Entities
 @inject DialogService DialogService
 @inject NotificationService NotificationService
 @inject IPESSOAS_REPOSITORY pessoa_repository
@@ -16,7 +17,12 @@
         <RadzenDataGridColumn TItem="PESSOAS" Property="ID" Title="ID" Width="50px" />
         <RadzenDataGridColumn TItem="PESSOAS" Property="NOME" Title="Nome" />
         <RadzenDataGridColumn TItem="PESSOAS" Property="DATA_NASCIMENTO" Title="Nascimento" FormatString="{0:dd/MM/yyyy}" />
-        <RadzenDataGridColumn TItem="PESSOAS" Property="CPF" Title="CPF" />
+        <RadzenDataGridColumn TItem="PESSOAS" Title="CPF">
+            <Template Context="p">
+                @FormatarCpf(p.CPF)
+            </Template>
+        </RadzenDataGridColumn>
+
         <RadzenDataGridColumn TItem="PESSOAS" Property="EMAIL" Title="Email" />
         <RadzenDataGridColumn TItem="PESSOAS" Context="p" Width="120px" Title="Ações">
             <Template Context="p">
@@ -86,4 +92,18 @@
             NotificationService.Notify(NotificationSeverity.Success, "Sucesso", "Pessoa excluída");
         }
     }
+
+    private string FormatarCpf(string cpf)
+    {
+        if (string.IsNullOrWhiteSpace(cpf)) return string.Empty;
+
+        // Remove qualquer caractere não numérico
+        var numeros = new string(cpf.Where(char.IsDigit).ToArray());
+
+        if (numeros.Length != 11)
+            return cpf; // Retorna como está se não tiver 11 dígitos
+
+        return $"{numeros[..3]}.{numeros[3..6]}.{numeros[6..9]}-{numeros[9..]}";
+    }
+
 }

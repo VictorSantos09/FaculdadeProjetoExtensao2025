@@ -1,8 +1,9 @@
-﻿@using Evento.Core.Entities
+﻿@using global::Evento.Core.Entities
 @inject DialogService DialogService
 
 <RadzenTemplateForm TItem="PESSOAS" Data="@Pessoa" Submit="@Salvar">
     <DataAnnotationsValidator />
+    <ValidationSummary />
 
     <RadzenFieldset Text="Dados da Pessoa" Style="margin-bottom: 15px">
         <RadzenLabel Text="Nome" />
@@ -14,7 +15,12 @@
         <ValidationMessage For="@(() => Pessoa.DATA_NASCIMENTO)" />
 
         <RadzenLabel Text="CPF" Style="margin-top: 10px" />
-        <RadzenTextBox @bind-Value="Pessoa.CPF" Style="width: 100%" Name="cpf" />
+        <RadzenTextBox @bind-Value="cpfTexto"
+                       Name="cpf"
+                       Style="width: 100%"
+                       MaxLength="14"
+                       @oninput="OnCpfInput"
+                       Placeholder="000.000.000-00" />
         <ValidationMessage For="@(() => Pessoa.CPF)" />
 
         <RadzenLabel Text="Email" Style="margin-top: 10px" />
@@ -36,6 +42,35 @@
 
     void Salvar(PESSOAS p)
     {
+        if (!System.ComponentModel.DataAnnotations.Validator.TryValidateObject(p, new ValidationContext(p), null, true))
+            return;
+
         DialogService.Close(p);
+    }
+
+    private string cpfTexto
+    {
+        get => Pessoa.CPF;
+        set => Pessoa.CPF = value;
+    }
+
+    private void OnCpfInput(ChangeEventArgs args)
+    {
+        if (args.Value is string input)
+        {
+            var numeros = new string(input.Where(char.IsDigit).ToArray());
+
+            if (numeros.Length > 11)
+                numeros = numeros.Substring(0, 11);
+
+            args.Value = numeros;
+            Pessoa.CPF = numeros switch
+            {
+                var v when v.Length <= 3 => v,
+                var v when v.Length <= 6 => $"{v[..3]}.{v[3..]}",
+                var v when v.Length <= 9 => $"{v[..3]}.{v[3..6]}.{v[6..]}",
+                _ => $"{numeros[..3]}.{numeros[3..6]}.{numeros[6..9]}-{numeros[9..]}"
+            };
+        }
     }
 }
