@@ -7,4 +7,6 @@ public interface IEventoService
 {
     Task<IFinal> CadastrarAsync(EVENTOS dto);
     Task<IFinal> ConfirmarAsync(ConfirmarPresencaDTO dto);
+    Task DeleteAsync(int id);
+    Task UpdateAsync(EVENTOS evento);
 }

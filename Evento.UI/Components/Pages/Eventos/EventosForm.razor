@@ -1,0 +1,40 @@
+﻿@inject DialogService DialogService
+
+<RadzenTemplateForm TItem="EVENTOS" Data="@Evento" Submit="@Salvar">
+    <DataAnnotationsValidator />
+    <RadzenFieldset Text="Dados do Evento" Style="margin-bottom: 15px">
+
+        <RadzenLabel Text="Nome" />
+        <RadzenTextBox @bind-Value="Evento.NOME" Style="width: 100%" Name="nome" />
+        <ValidationMessage For="@(() => Evento.NOME)" />
+
+        <RadzenLabel Text="Descrição" Style="margin-top: 10px" />
+        <RadzenTextArea @bind-Value="Evento.DESCRICAO" Style="width: 100%" Name="descricao" />
+
+        <RadzenLabel Text="Observação" Style="margin-top: 10px" />
+        <RadzenTextArea @bind-Value="Evento.OBSERVACAO" Style="width: 100%" Name="observacao" />
+
+        <RadzenLabel Text="Data de Início" Style="margin-top: 10px" />
+        <RadzenDatePicker @bind-Value="Evento.DATA_INICIO" Style="width: 100%" DateFormat="dd/MM/yyyy" Name="dataInicio" />
+        <ValidationMessage For="@(() => Evento.DATA_INICIO)" />
+
+        <RadzenLabel Text="Data de Fim" Style="margin-top: 10px" />
+        <RadzenDatePicker @bind-Value="Evento.DATA_FIM" Style="width: 100%" DateFormat="dd/MM/yyyy" Name="dataFim" />
+        <ValidationMessage For="@(() => Evento.DATA_FIM)" />
+
+        <RadzenLabel Text="QR Code" Style="margin-top: 10px" />
+        <img src="@Evento.CAMINHO_QR_CODE" alt="QR Code" style="max-width: 200px; max-height: 200px;" />
+
+    </RadzenFieldset>
+
+    <RadzenButton ButtonType="ButtonType.Submit" Text="Salvar" Style="margin-right: 10px" ButtonStyle="ButtonStyle.Primary" />
+    <RadzenButton Text="Cancelar" ButtonStyle="ButtonStyle.Secondary" Click="@Cancelar" />
+</RadzenTemplateForm>
+
+@code {
+    [Parameter] public EVENTOS Evento { get; set; } = new();
+
+    void Cancelar() => DialogService.Close(null);
+
+    void Salvar(EVENTOS e) => DialogService.Close(e);
+}

@@ -1,5 +1,6 @@
 ﻿using Evento.Core.Repositories;
 using Evento.Core.Repositories.Interfaces;
+using Evento.Core.Services.Evento;
 using Evento.Core.Services.EventoPessoa;
 using Evento.Core.Services.Pessoa;
 using FluentValidation;
@@ -22,6 +23,7 @@ public static class EventoConfig
 
         services.AddScoped<IEventoPessoaService, EventoPessoaService>();
         services.AddScoped<IPessoaService, PessoaService>();
+        services.AddScoped<IEventoService, EventoService>();
         services.AddScoped<IEventoPessoaService, EventoPessoaService>();
         services.AddScoped<IPESSOAS_REPOSITORY, PESSOAS_REPOSITORY>();
         services.AddScoped<IEVENTOS_PESSOAS_REPOSITORY, EVENTOS_PESSOAS_REPOSITORY>();

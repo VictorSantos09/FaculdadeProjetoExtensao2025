@@ -15,7 +15,8 @@ internal class EventoService(IEVENTOS_REPOSITORY eventos_repository,
         try
         {
             await validator.ValidateAsync(evento);
-            var caminhoQRCode = Path.Combine(EVENTOS.BASE_PATH_QR_CODE, $"{Guid.NewGuid()}");
+            evento.CREATED_AT = DateTime.Now;
+            evento.CAMINHO_QR_CODE = Path.Combine(EVENTOS.BASE_PATH_QR_CODE, $"{Guid.NewGuid()}");
 
             await eventos_repository.AddAsync(evento);
 
@@ -46,5 +47,15 @@ internal class EventoService(IEVENTOS_REPOSITORY eventos_repository,
         await eventos_pessoas_repository.UpdateAsync(eventoPessoa.ID, eventoPessoa);
 
         return Result.Success("Presença confirmada.");
+    }
+
+    public async Task DeleteAsync(int id)
+    {
+        await eventos_repository.DeleteAsync(id);
+    }
+
+    public async Task UpdateAsync(EVENTOS evento)
+    {
+        await eventos_repository.UpdateAsync(evento.ID, evento);
     }
 }

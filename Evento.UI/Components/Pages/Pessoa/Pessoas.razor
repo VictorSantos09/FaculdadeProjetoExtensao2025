@@ -42,7 +42,7 @@
     async Task Novo()
     {
         var pessoa = new PESSOAS { DATA_NASCIMENTO = DateTime.Today };
-        var result = await DialogService.OpenAsync<PessoaForm>("Nova Pessoa", options: new DialogOptions() { Width = "50%", Height = "50%" });
+        var result = await DialogService.OpenAsync<PessoaForm>("Nova Pessoa", options: new DialogOptions() { Width = "50%", Height = "auto" });
         if (result is PESSOAS novaPessoa)
         {
             novaPessoa.ID = pessoas.Any() ? pessoas.Max(x => x.ID) + 1 : 1;

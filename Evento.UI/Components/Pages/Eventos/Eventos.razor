@@ -1,0 +1,96 @@
+﻿@page "/eventos"
+@inject DialogService DialogService
+@inject NotificationService NotificationService
+@inject IEVENTOS_REPOSITORY EventoRepository
+@inject IEventoService EventoService
+
+<h3>Eventos</h3>
+
+<RadzenButton Icon="add_circle" Style="margin-bottom: 10px" Text="Novo Evento" Click="Novo" ButtonStyle="ButtonStyle.Primary" />
+
+<RadzenDataGrid @ref="grid" Data="@eventos" TItem="EVENTOS" AllowFiltering="true" AllowPaging="true" PageSize="5"
+                AllowSorting="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Responsive="true"
+                ShowPagingSummary="true" EditMode="DataGridEditMode.Single">
+    <Columns>
+        <RadzenDataGridColumn TItem="EVENTOS" Property="ID" Title="ID" Width="50px" />
+        <RadzenDataGridColumn TItem="EVENTOS" Property="NOME" Title="Nome" />
+        <RadzenDataGridColumn TItem="EVENTOS" Property="DATA_INICIO" Title="Início" FormatString="{0:dd/MM/yyyy}" />
+        <RadzenDataGridColumn TItem="EVENTOS" Property="DATA_FIM" Title="Fim" FormatString="{0:dd/MM/yyyy}" />
+        <RadzenDataGridColumn TItem="EVENTOS" Title="QR Code">
+            <Template Context="e">
+                @* <img src="@e.CAMINHO_QR_CODE" alt="QR Code" style="max-width: 60px;" /> *@
+            </Template>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="EVENTOS" Context="e" Width="120px" Title="Ações">
+            <Template Context="e">
+                <RadzenButton Icon="edit" Size="ButtonSize.Small" Style="margin-right: 5px" Click="@(args => Editar(e))" />
+                <RadzenButton Icon="delete" ButtonStyle="ButtonStyle.Danger" Size="ButtonSize.Small" Click="@(args => Excluir(e))" />
+            </Template>
+        </RadzenDataGridColumn>
+    </Columns>
+</RadzenDataGrid>
+
+@code {
+    private RadzenDataGrid<EVENTOS>? grid;
+    private List<EVENTOS> eventos = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        eventos = (await EventoRepository.GetAllAsync()).ToList();
+    }
+
+    async Task Novo()
+    {
+        EVENTOS novo = new();
+
+        var result = await DialogService.OpenAsync<EventosForm>("Novo Evento", options: new DialogOptions { Width = "600px", Height = "auto" });
+        if (result is EVENTOS e)
+        {
+            e.ID = eventos.Any() ? eventos.Max(x => x.ID) + 1 : 1;
+            await EventoService.CadastrarAsync(e);
+            eventos.Add(e);
+            await grid!.Reload();
+            NotificationService.Notify(NotificationSeverity.Success, "Sucesso", "Evento cadastrado com sucesso");
+        }
+    }
+
+    async Task Editar(EVENTOS evento)
+    {
+        var copia = new EVENTOS
+        {
+            ID = evento.ID,
+            NOME = evento.NOME,
+            DESCRICAO = evento.DESCRICAO,
+            OBSERVACAO = evento.OBSERVACAO,
+            DATA_INICIO = evento.DATA_INICIO,
+            DATA_FIM = evento.DATA_FIM,
+            CAMINHO_QR_CODE = evento.CAMINHO_QR_CODE
+        };
+
+        var result = await DialogService.OpenAsync<EventosForm>("Editar Evento", new Dictionary<string, object> { { "Evento", copia } }, new DialogOptions { Width = "600px", Height = "auto" });
+
+        if (result is EVENTOS atualizado)
+        {
+            var index = eventos.FindIndex(x => x.ID == atualizado.ID);
+            if (index != -1)
+            {
+                eventos[index] = atualizado;
+                await EventoService.UpdateAsync(atualizado);
+                await grid!.Reload();
+                NotificationService.Notify(NotificationSeverity.Success, "Sucesso", "Evento atualizado");
+            }
+        }
+    }
+
+    async Task Excluir(EVENTOS evento)
+    {
+        bool? confirm = await DialogService.Confirm($"Deseja excluir o evento '{evento.NOME}'?", "Confirmação");
+        if (confirm == true)
+        {
+            eventos.Remove(evento);
+            await EventoService.DeleteAsync(evento.ID);
+            await grid!.Reload();
+            NotificationService.Notify(NotificationSeverity.Success, "Sucesso", "Evento excluído");
+        }
+    }
+}
