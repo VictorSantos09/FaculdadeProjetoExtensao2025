@@ -46,4 +46,10 @@ public class EVENTOS_PESSOAS_REPOSITORY : EVENTOS_PESSOAS_REPOSITORY_BASE<EVENTO
         var sql = $"DELETE FROM eventos_pessoas WHERE ID_EVENTO = @idEvento AND ID_PESSOA = @idPessoa";
         return await _connection.ExecuteAsync(sql, new { idEvento, idPessoa });
     }
+
+    public async Task<int> DeleteByIdEventoAsync(int idEvento)
+    {
+        var sql = $"DELETE FROM eventos_pessoas WHERE ID_EVENTO = @idEvento";
+        return await _connection.ExecuteAsync(sql, new { idEvento });
+    }
 }

@@ -1,4 +1,4 @@
-﻿@using global::Evento.Core.Entities
+﻿@using Evento.Core.Extensions
 @inject DialogService DialogService
 
 <RadzenTemplateForm TItem="PESSOAS" Data="@Pessoa" Submit="@Salvar">
@@ -50,7 +50,7 @@
 
     private string cpfTexto
     {
-        get => Pessoa.CPF;
+        get => Pessoa.CPF.FormatarCpf();
         set => Pessoa.CPF = value;
     }
 
@@ -64,13 +64,7 @@
                 numeros = numeros.Substring(0, 11);
 
             args.Value = numeros;
-            Pessoa.CPF = numeros switch
-            {
-                var v when v.Length <= 3 => v,
-                var v when v.Length <= 6 => $"{v[..3]}.{v[3..]}",
-                var v when v.Length <= 9 => $"{v[..3]}.{v[3..6]}.{v[6..]}",
-                _ => $"{numeros[..3]}.{numeros[3..6]}.{numeros[6..9]}-{numeros[9..]}"
-            };
+            Pessoa.CPF = numeros.FormatarCpf();
         }
     }
 }

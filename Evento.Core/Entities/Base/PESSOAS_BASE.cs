@@ -18,7 +18,6 @@ public class PESSOAS_BASE
     public DateTime DATA_NASCIMENTO { get; set; }
 
     [Required(ErrorMessage = "O CPF é obrigatório.")]
-    [RegularExpression(@"^\d{3}\.\d{3}\.\d{3}-\d{2}$", ErrorMessage = "CPF inválido. Use o formato 000.000.000-00.")]
     public string CPF { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "O e-mail é obrigatório.")]

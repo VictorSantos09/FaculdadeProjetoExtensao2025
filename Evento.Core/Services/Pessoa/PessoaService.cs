@@ -25,6 +25,7 @@ public class PessoaService(IPESSOAS_REPOSITORY pessoas_repository) : IPessoaServ
     public async Task UpdateAsync(PESSOAS pessoa)
     {
         pessoa.UPDATED_AT = DateTime.Now;
+        pessoa.CPF = pessoa.CPF.Replace(".", "").Replace("-", "").Trim();
         await pessoas_repository.UpdateAsync(pessoa.ID, pessoa);
     }
 

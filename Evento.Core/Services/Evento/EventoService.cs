@@ -59,6 +59,7 @@ internal class EventoService(IEVENTOS_REPOSITORY eventos_repository,
 
     public async Task DeleteAsync(int id)
     {
+        await eventos_pessoas_repository.DeleteByIdEventoAsync(id);
         await eventos_repository.DeleteAsync(id);
     }
 
