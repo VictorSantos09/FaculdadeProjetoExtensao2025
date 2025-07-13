@@ -8,7 +8,7 @@
 
 <RadzenButton Icon="add_circle" Style="margin-bottom: 10px" Text="Novo" Click="Novo" ButtonStyle="ButtonStyle.Primary" />
 
-<PessoaGrid OnEditar="Editar" OnExcluir="Excluir" Pessoas="pessoas"/>
+<PessoaGrid OnEditar="Editar" OnExcluir="Excluir" Pessoas="pessoas" OnGridRefReady="@(g => grid = g)" />
 
 @code {
     private RadzenDataGrid<PESSOAS>? grid;

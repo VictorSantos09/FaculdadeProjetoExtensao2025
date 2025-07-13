@@ -18,16 +18,18 @@ internal class EventoService(IEVENTOS_REPOSITORY eventos_repository,
     public async Task<IFinal> CadastrarAsync(EVENTOS evento)
     {
         await validator.ValidateAsync(evento);
-        evento.CREATED_AT = DateTime.Now;
 
+        var imagem = QrCodeService.GenerateBase64($"https://localhost:7165/confirmacaoEvento?id={evento.ID}", 10);
         ImagemBase64DTO dto = new()
         {
             FileName = FILE_NAME,
-            Image = QrCodeService.GenerateBase64($"https://localhost:7165/confirmacaoEvento?id={evento.ID}", 10),
+            Image = imagem,
         };
         await imagemService.ArmazenarImagemOnDiskAsync(dto);
 
         evento.CAMINHO_QR_CODE = dto.FileName;
+        evento.CREATED_AT = DateTime.Now;
+        evento.Image = await imagemService.GetImagemOnDisk(evento.CAMINHO_QR_CODE);
 
         await eventos_repository.AddAsync(evento);
 
