@@ -1,0 +1,105 @@
+﻿@page "/confirmacaoEvento"
+@using Evento.Core.Services.Evento.DTO
+@inject NavigationManager Navigation
+@inject NotificationService NotificationService
+@inject IEventoService EventoService
+@inject IEventoPessoaService EventoPessoaService
+
+<div style="display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px;">
+    <RadzenCard Style="width: 100%; max-width: 500px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border-radius: 12px;">
+        @if (evento is null)
+        {
+            <RadzenHeading Size="H3" Text="Evento não encontrado." Style="text-align: center;" />
+        }
+        else
+        {
+            <RadzenHeading Size="H2" Text="@evento.NOME" Style="text-align: center; margin-bottom: 10px;" />
+
+            <RadzenFieldset Style="margin-bottom: 10px;" Legend="Detalhes do Evento">
+                <p><b>Descrição:</b> @evento.DESCRICAO</p>
+                <p><b>Observação:</b> @evento.OBSERVACAO</p>
+                <p><b>Início:</b> @evento.DATA_INICIO.ToString("dd/MM/yyyy HH:mm")</p>
+                <p><b>Fim:</b> @evento.DATA_FIM.ToString("dd/MM/yyyy HH:mm")</p>
+            </RadzenFieldset>
+
+            @if (presencaConfirmada)
+            {
+                <RadzenAlert Severity="AlertSeverity.Success" Style="margin-top: 20px; text-align: center;">
+                    ✅ Presença confirmada com sucesso!
+                </RadzenAlert>
+            }
+            else
+            {
+                <RadzenFieldset Legend="Confirme sua presença">
+                    <RadzenTemplateForm TItem="PresencaForm" Data="@form" Submit="Confirmar">
+                        <DataAnnotationsValidator />
+
+                        <div style="margin-bottom: 10px;">
+                            <RadzenLabel Text="CPF:" Component="cpf" />
+                            <RadzenTextBox @bind-Value="form.CPF" Name="cpf" Style="width: 100%;" />
+                            <ValidationMessage For="@(() => form.CPF)" />
+                        </div>
+
+                        <RadzenButton ButtonType="ButtonType.Submit" Text="Confirmar Presença"
+                                      Icon="check" Style="width: 100%; margin-top: 10px;"
+                                      ButtonStyle="ButtonStyle.Primary" />
+                    </RadzenTemplateForm>
+                </RadzenFieldset>
+            }
+        }
+    </RadzenCard>
+</div>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private EVENTOS? evento;
+    private PresencaForm form = new();
+    private bool presencaConfirmada = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var uri = Navigation.ToAbsoluteUri(Navigation.Uri);
+        var query = Microsoft.AspNetCore.WebUtilities.QueryHelpers.ParseQuery(uri.Query);
+
+        if (query.TryGetValue("id", out var eventoId))
+        {
+            if (int.TryParse(eventoId, out var idParsed))
+            {
+                Id = idParsed;
+                evento = await EventoService.GetByIdAsync(Id);
+            }
+        }
+    }
+
+    private async Task Confirmar(PresencaForm model)
+    {
+        try
+        {
+            var result = await EventoService.ConfirmarAsync(new ConfirmarPresencaDTO(model.CPF, Id));
+            if (result.IsSuccess)
+            {
+                NotificationService.Notify(NotificationSeverity.Success, "Presença confirmada!");
+                presencaConfirmada = true;
+                await InvokeAsync(StateHasChanged);
+            }
+            else
+            {
+                NotificationService.Notify(NotificationSeverity.Warning, result.Reason);
+            }
+
+        }
+        catch (Exception ex)
+        {
+            NotificationService.Notify(NotificationSeverity.Error, ex.Message);
+        }
+    }
+
+    public class PresencaForm
+    {
+        [Required(ErrorMessage = "CPF é obrigatório")]
+        [RegularExpression(@"^\d{3}\.?\d{3}\.?\d{3}-?\d{2}$", ErrorMessage = "CPF inválido")]
+        public string CPF { get; set; } = string.Empty;
+    }
+}

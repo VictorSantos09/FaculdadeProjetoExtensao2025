@@ -9,5 +9,6 @@ public interface IEventoService
     Task<IFinal> ConfirmarAsync(ConfirmarPresencaDTO dto);
     Task DeleteAsync(int id);
     Task<IEnumerable<EVENTOS>> GetAllAsync();
+    Task<EVENTOS?> GetByIdAsync(int id);
     Task UpdateAsync(EVENTOS evento);
 }

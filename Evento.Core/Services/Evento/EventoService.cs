@@ -23,7 +23,7 @@ internal class EventoService(IEVENTOS_REPOSITORY eventos_repository,
         ImagemBase64DTO dto = new()
         {
             FileName = FILE_NAME,
-            Image = QrCodeService.GenerateBase64($"http://localhost:7165/confirmacaoEvento?id={evento.ID}", 10),
+            Image = QrCodeService.GenerateBase64($"https://localhost:7165/confirmacaoEvento?id={evento.ID}", 10),
         };
         await imagemService.ArmazenarImagemOnDiskAsync(dto);
 
@@ -75,5 +75,10 @@ internal class EventoService(IEVENTOS_REPOSITORY eventos_repository,
         }
 
         return eventos;
+    }
+
+    public async Task<EVENTOS?> GetByIdAsync(int id)
+    {
+        return await eventos_repository.GetByIdAsync(id);
     }
 }

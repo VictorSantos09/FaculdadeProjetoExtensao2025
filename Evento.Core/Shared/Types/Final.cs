@@ -43,5 +43,6 @@ public interface IFinal<T> : IFinal
 public interface IFinal
 {
     bool IsSuccess { get; }
+    string Reason { get; }
     IEnumerable<ValidationFailureCustom>? Failures { get; }
 }
