@@ -1,0 +1,95 @@
+﻿@using Evento.Core.Extensions
+@inject IPESSOAS_REPOSITORY pessoa_repository
+@inject IPessoaService PessoaService
+@inject NotificationService NotificationService
+@inject DialogService DialogService
+
+<RadzenDataGrid @ref="grid" Data="@Pessoas" TItem="PESSOAS"
+                AllowFiltering="true" AllowPaging="true" PageSize="5"
+                AllowSorting="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                Responsive="true" ShowPagingSummary="true">
+
+    <Columns>
+        <RadzenDataGridColumn Property="ID" Title="ID" Width="50px" />
+        <RadzenDataGridColumn Property="NOME" Title="Nome" />
+        <RadzenDataGridColumn Property="DATA_NASCIMENTO" Title="Nascimento" FormatString="{0:dd/MM/yyyy}" />
+        <RadzenDataGridColumn Title="CPF">
+            <Template Context="p">
+                @p.CPF.FormatarCpf()
+            </Template>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="PESSOAS" Property="EMAIL" Title="Email" />
+        <RadzenDataGridColumn TItem="PESSOAS" Context="p" Width="120px" Title="Ações">
+            <Template Context="p">
+                @if (OnEditar.HasDelegate)
+                {
+                    <RadzenButton Icon="edit" Size="ButtonSize.Small" Style="margin-right: 5px" Click="@(args => Editar(p))" />
+                }
+                @if (OnExcluir.HasDelegate)
+                {
+                    <RadzenButton Icon="delete" ButtonStyle="ButtonStyle.Danger" Size="ButtonSize.Small" Click="@(args => Excluir(p))" />
+                }
+            </Template>
+        </RadzenDataGridColumn>
+    </Columns>
+</RadzenDataGrid>
+
+@if (Selecionavel)
+{
+    <RadzenPanel AllowCollapse="true" class="rz-my-10 rz-mx-auto" Style="max-width: 700px; width: 100%;" Collapsed="true">
+        <HeaderTemplate>
+            <RadzenText TextStyle="TextStyle.H6" class="rz-display-flex rz-align-items-center rz-m-0">
+                <RadzenIcon Icon="people" class="rz-me-1" /><b>Adicionar</b>
+            </RadzenText>
+        </HeaderTemplate>
+        <ChildContent>
+            <RadzenStack Orientation="Orientation.Vertical" class="rz-my-10 rz-mx-auto" Style="width: 100%;">
+                <RadzenButton Text="Confirmar Seleção" Click="ConfirmarSelecao" ButtonStyle="ButtonStyle.Primary" Style="margin-bottom: 10px" />
+                <RadzenListBox @bind-Value=@pessoasSelecionadas
+                               Data=@PessoasNaoSelecionadas
+                               TextProperty="@nameof(PESSOAS.NOME_CPF)"
+                               ValueProperty="@nameof(PESSOAS.ID)"
+                               Multiple=true
+                               AllowClear=true
+                               Placeholder="Selecione as pessoas"
+                               Style="width: 100%; max-height: 250px; overflow-y: auto;"/>
+            </RadzenStack>
+        </ChildContent>
+    </RadzenPanel>
+}
+
+@code {
+    private RadzenDataGrid<PESSOAS>? grid;
+    private List<int> pessoasSelecionadas = [];
+
+    [Parameter] public List<PESSOAS> Pessoas { get; set; } = [];
+    [Parameter] public List<PESSOAS> PessoasNaoSelecionadas { get; set; } = [];
+    [Parameter] public bool Selecionavel { get; set; } = false;
+    [Parameter] public EventCallback<List<int>> ConfirmarSelecionados { get; set; }
+    [Parameter] public EventCallback<PESSOAS> OnEditar { get; set; }
+    [Parameter] public EventCallback<PESSOAS> OnExcluir { get; set; }
+
+    private async Task ConfirmarSelecao()
+    {
+        await ConfirmarSelecionados.InvokeAsync(pessoasSelecionadas);
+    }
+
+    private async Task Editar(PESSOAS pessoa)
+    {
+        if (OnEditar.HasDelegate)
+        {
+            await OnEditar.InvokeAsync(pessoa);
+        }
+    }
+
+    private async Task Excluir(PESSOAS pessoa)
+    {
+        if (OnExcluir.HasDelegate)
+        {
+            Pessoas.Remove(pessoa);
+            await OnExcluir.InvokeAsync(pessoa);
+            await grid!.Reload();
+            PessoasNaoSelecionadas.Add(pessoa);
+        }
+    }
+}

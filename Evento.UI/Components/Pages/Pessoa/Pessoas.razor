@@ -8,27 +8,7 @@
 
 <RadzenButton Icon="add_circle" Style="margin-bottom: 10px" Text="Novo" Click="Novo" ButtonStyle="ButtonStyle.Primary" />
 
-<RadzenDataGrid @ref="grid" Data="@pessoas" TItem="PESSOAS" AllowFiltering="true" AllowPaging="true" PageSize="5" AllowSorting="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Responsive="true" ShowPagingSummary="true" EditMode="DataGridEditMode.Single">
-
-    <Columns>
-        <RadzenDataGridColumn TItem="PESSOAS" Property="ID" Title="ID" Width="50px" />
-        <RadzenDataGridColumn TItem="PESSOAS" Property="NOME" Title="Nome" />
-        <RadzenDataGridColumn TItem="PESSOAS" Property="DATA_NASCIMENTO" Title="Nascimento" FormatString="{0:dd/MM/yyyy}" />
-        <RadzenDataGridColumn TItem="PESSOAS" Title="CPF">
-            <Template Context="p">
-                @FormatarCpf(p.CPF)
-            </Template>
-        </RadzenDataGridColumn>
-
-        <RadzenDataGridColumn TItem="PESSOAS" Property="EMAIL" Title="Email" />
-        <RadzenDataGridColumn TItem="PESSOAS" Context="p" Width="120px" Title="Ações">
-            <Template Context="p">
-                <RadzenButton Icon="edit" Size="ButtonSize.Small" Style="margin-right: 5px" Click="@(args => Editar(p))" />
-                <RadzenButton Icon="delete" ButtonStyle="ButtonStyle.Danger" Size="ButtonSize.Small" Click="@(args => Excluir(p))" />
-            </Template>
-        </RadzenDataGridColumn>
-    </Columns>
-</RadzenDataGrid>
+<PessoaGrid OnEditar="Editar" OnExcluir="Excluir" Pessoas="pessoas"/>
 
 @code {
     private RadzenDataGrid<PESSOAS>? grid;
@@ -64,7 +44,7 @@
             EMAIL = pessoa.EMAIL
         };
 
-        var result = await DialogService.OpenAsync<PessoaForm>("Editar Pessoa", new Dictionary<string, object> { { "Pessoa", pessoaCopy } }, new DialogOptions() { Width = "400px", Height = "400px" });
+        var result = await DialogService.OpenAsync<PessoaForm>("Editar Pessoa", new Dictionary<string, object> { { "Pessoa", pessoaCopy } }, new DialogOptions() { Width = "50%", Height = "auto" });
         if (result is PESSOAS pessoaEditada)
         {
             var index = pessoas.FindIndex(x => x.ID == pessoaEditada.ID);
@@ -88,19 +68,6 @@
             await grid!.Reload();
             NotificationService.Notify(NotificationSeverity.Success, "Sucesso", "Pessoa excluída");
         }
-    }
-
-    private string FormatarCpf(string cpf)
-    {
-        if (string.IsNullOrWhiteSpace(cpf)) return string.Empty;
-
-        // Remove qualquer caractere não numérico
-        var numeros = new string(cpf.Where(char.IsDigit).ToArray());
-
-        if (numeros.Length != 11)
-            return cpf; // Retorna como está se não tiver 11 dígitos
-
-        return $"{numeros[..3]}.{numeros[3..6]}.{numeros[6..9]}-{numeros[9..]}";
     }
 
 }

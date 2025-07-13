@@ -30,15 +30,31 @@ public class EventoPessoaService(IEVENTOS_PESSOAS_REPOSITORY eventos_pessoas_rep
         await eventos_pessoas_repository.DeleteAsync(id);
     }
 
-    public async Task<IEnumerable<EVENTOS_PESSOAS>> GetByEventoIdAsync(int eventoId)
+    public async Task DeleteAsync(int idEvento, int idPessoa)
     {
-        return [];
-        //return await eventos_pessoas_repository.GetByEventoIdAsync(eventoId);
+        await eventos_pessoas_repository.DeleteAsync(idEvento, idPessoa);
     }
 
-    public async Task<IEnumerable<EVENTOS_PESSOAS>> GetByPessoaIdAsync(int pessoaId)
+    public async Task<IEnumerable<PESSOAS>> GetPessoaByEventoAsync(int eventoId)
     {
-        return [];
-        //return await eventos_pessoas_repository.GetByPessoaIdAsync(pessoaId);
+        return await eventos_pessoas_repository.GetPessoaByEventoAsync(eventoId);
+    }
+
+    public async Task<IEnumerable<PESSOAS>> GetPessoaForaEventosAsync(int eventoId)
+    {
+        return await eventos_pessoas_repository.GetPessoaForaEventosAsync(eventoId);
+    }
+
+    public async Task AdicionarParticipantesAsync(IEnumerable<int> idsPessoas, int eventoId)
+    {
+        foreach (var id in idsPessoas)
+        {
+            await eventos_pessoas_repository.AddAsync(new EVENTOS_PESSOAS()
+            {
+                CREATED_AT = DateTime.Now,
+                ID_EVENTO = eventoId,
+                ID_PESSOA = id,
+            });
+        }
     }
 }

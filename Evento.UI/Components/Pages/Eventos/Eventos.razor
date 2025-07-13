@@ -25,6 +25,7 @@
         </RadzenDataGridColumn>
         <RadzenDataGridColumn TItem="EVENTOS" Context="e" Width="120px" Title="Ações">
             <Template Context="e">
+                <RadzenButton Icon="people" ButtonStyle="ButtonStyle.Secondary" Size="ButtonSize.Small" Click="@(args => AbrirParticipantes(e))" />
                 <RadzenButton Icon="edit" Size="ButtonSize.Small" Style="margin-right: 5px" Click="@(args => Editar(e))" />
                 <RadzenButton Icon="delete" ButtonStyle="ButtonStyle.Danger" Size="ButtonSize.Small" Click="@(args => Excluir(e))" />
             </Template>
@@ -106,5 +107,22 @@
                                                                     Resizable = true,
                                                                     Draggable = true }
         );
+    }
+    
+    async Task AbrirParticipantes(EVENTOS evento)
+    {
+        await DialogService.OpenAsync<EventoParticipantes>(
+           "Participantes",
+           new Dictionary<string, object> { { "evento", evento } },
+           new DialogOptions
+           {
+               Width = "40%",
+               Height = "auto",
+               CloseDialogOnOverlayClick = true,
+               CloseDialogOnEsc = true,
+               Resizable = true,
+               Draggable = true
+           }
+       );
     }
 }

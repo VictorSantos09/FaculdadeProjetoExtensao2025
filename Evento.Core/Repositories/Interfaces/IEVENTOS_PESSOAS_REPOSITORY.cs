@@ -11,5 +11,8 @@ namespace Evento.Core.Repositories.Interfaces;
 
 public interface IEVENTOS_PESSOAS_REPOSITORY : IEVENTOS_PESSOAS_REPOSITORY_BASE<EVENTOS_PESSOAS>
 {
+    Task<int> DeleteAsync(int idEvento, int idPessoa);
     Task<EVENTOS_PESSOAS?> GetByEventoPessoaAsync(int idPessoa, int idEvento);
+    Task<IEnumerable<PESSOAS>> GetPessoaByEventoAsync(int idEvento);
+    Task<IEnumerable<PESSOAS>> GetPessoaForaEventosAsync(int idEvento);
 }

@@ -1,4 +1,5 @@
 using Evento.Core.Entities.Base;
+using Evento.Core.Extensions;
 
 
 /*
@@ -11,5 +12,5 @@ namespace Evento.Core.Entities;
 
 public class PESSOAS : PESSOAS_BASE
 {
-    
+	public string NOME_CPF => $"{NOME} - {CPF.FormatarCpf()}";
 }

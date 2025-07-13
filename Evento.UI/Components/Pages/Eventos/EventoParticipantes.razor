@@ -1,0 +1,37 @@
+﻿@using Evento.UI.Components.Pages.Pessoa
+@inject IEventoPessoaService EventoPessoaService
+@inject DialogService DialogService
+@inject NotificationService NotificationService
+
+<PessoaGrid Selecionavel="true"
+            ConfirmarSelecionados="ReceberSelecionados"
+            Pessoas="_pessoas"
+            PessoasNaoSelecionadas="_pessoasNaoSelecionadas"
+            OnExcluir="OnExcluir"/>
+
+@code {
+    [Parameter] public EVENTOS Evento { get; set; }
+
+    private List<PESSOAS> _pessoas = [];
+    private List<PESSOAS> _pessoasNaoSelecionadas = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        _pessoas = (await EventoPessoaService.GetPessoaByEventoAsync(Evento.ID)).ToList();
+        _pessoasNaoSelecionadas = (await EventoPessoaService.GetPessoaForaEventosAsync(Evento.ID)).ToList();
+    }
+
+    private async Task ReceberSelecionados(List<int> selecionados)
+    {
+        await EventoPessoaService.AdicionarParticipantesAsync(selecionados, Evento.ID);
+
+        NotificationService.Notify(NotificationSeverity.Success, "Sucesso", "Participantes atualizados.");
+        DialogService.Close();
+    }
+
+    private async Task OnExcluir(PESSOAS pessoa)
+    {
+        await EventoPessoaService.DeleteAsync(Evento.ID, pessoa.ID);
+        NotificationService.Notify(NotificationSeverity.Success, "Sucesso", "Participante removido do evento.");
+    }
+}
