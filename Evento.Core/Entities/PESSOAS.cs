@@ -13,4 +13,5 @@ namespace Evento.Core.Entities;
 public class PESSOAS : PESSOAS_BASE
 {
 	public string NOME_CPF => $"{NOME} - {CPF.FormatarCpf()}";
+    public DateTime? DATA_CONFIRMACAO { get; set; }
 }

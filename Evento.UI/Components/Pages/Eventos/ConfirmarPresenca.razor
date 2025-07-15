@@ -77,6 +77,14 @@
     {
         try
         {
+            var agora = DateTime.Now;
+            if (agora < evento.DATA_INICIO || agora > evento.DATA_FIM)
+            {
+                NotificationService.Notify(NotificationSeverity.Warning,
+                    $"Você só pode confirmar presença entre {evento.DATA_INICIO:dd/MM/yyyy HH:mm} e {evento.DATA_FIM:dd/MM/yyyy HH:mm}.");
+                return;
+            }
+
             var result = await EventoService.ConfirmarAsync(new ConfirmarPresencaDTO(model.CPF, Id));
             if (result.IsSuccess)
             {

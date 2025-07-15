@@ -26,6 +26,10 @@
             </Template>
         </RadzenDataGridColumn>
         <RadzenDataGridColumn TItem="PESSOAS" Property="EMAIL" Title="Email" />
+        @foreach (var c in Columns)
+        {
+            <RadzenDataGridColumn TItem="PESSOAS" Property="@c.Property" Title="@c.Title" />
+        }
         <RadzenDataGridColumn TItem="PESSOAS" Context="p" Width="120px" Title="Ações">
             <Template Context="p">
                 @if (OnEditar.HasDelegate)
@@ -66,10 +70,16 @@
 }
 
 @code {
+    public class Column
+    {
+        public string Property { get; set; }
+        public string Title { get; set; }
+    }
     private RadzenDataGrid<PESSOAS>? grid;
     private List<int> pessoasSelecionadas = [];
     private HttpClient Http = new HttpClient();
 
+    [Parameter] public List<Column> Columns { get; set; } = [];
     [Parameter] public List<PESSOAS> Pessoas { get; set; } = [];
     [Parameter] public List<PESSOAS> PessoasNaoSelecionadas { get; set; } = [];
     [Parameter] public bool Selecionavel { get; set; } = false;

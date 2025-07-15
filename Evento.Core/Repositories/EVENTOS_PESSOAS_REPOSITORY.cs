@@ -26,7 +26,7 @@ public class EVENTOS_PESSOAS_REPOSITORY : EVENTOS_PESSOAS_REPOSITORY_BASE<EVENTO
 
     public async Task<IEnumerable<PESSOAS>> GetPessoaByEventoAsync(int idEvento)
     {
-        var sql = @$"select p.* from pessoas p
+        var sql = @$"select p.*, ep.DATA_CONFIRMACAO from pessoas p
                     join eventos_pessoas ep on ep.ID_PESSOA = p.ID
                     where ep.ID_EVENTO = @idEvento";
         return await _connection.QueryAsync<PESSOAS>(sql, new { idEvento});

@@ -1,4 +1,5 @@
 ﻿@using Evento.UI.Components.Pages.Pessoa
+@using static Evento.UI.Components.Pages.Pessoa.PessoaGrid
 @inject IEventoPessoaService EventoPessoaService
 @inject DialogService DialogService
 @inject NotificationService NotificationService
@@ -7,13 +8,20 @@
             ConfirmarSelecionados="ReceberSelecionados"
             Pessoas="_pessoas"
             PessoasNaoSelecionadas="_pessoasNaoSelecionadas"
-            OnExcluir="OnExcluir"/>
+            OnExcluir="OnExcluir"
+            Columns="Columns"/>
 
 @code {
     [Parameter] public EVENTOS Evento { get; set; }
 
     private List<PESSOAS> _pessoas = [];
     private List<PESSOAS> _pessoasNaoSelecionadas = [];
+    private List<Column> Columns = [
+    new (){
+        Property = nameof(EVENTOS_PESSOAS.DATA_CONFIRMACAO),
+        Title = "Confirmado em"
+    }
+    ];
 
     protected override async Task OnInitializedAsync()
     {

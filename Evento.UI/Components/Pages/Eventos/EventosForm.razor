@@ -15,11 +15,19 @@
         <RadzenTextArea @bind-Value="Evento.OBSERVACAO" Style="width: 100%" Name="observacao" />
 
         <RadzenLabel Text="Data de Início" Style="margin-top: 10px" />
-        <RadzenDatePicker @bind-Value="Evento.DATA_INICIO" Style="width: 100%" DateFormat="dd/MM/yyyy" Name="dataInicio" />
+        <RadzenDatePicker @bind-Value="Evento.DATA_INICIO"
+                          Style="width: 100%"
+                          DateFormat="dd/MM/yyyy HH:mm"
+                          ShowTime="true"
+                          Name="dataInicio" />
         <ValidationMessage For="@(() => Evento.DATA_INICIO)" />
 
         <RadzenLabel Text="Data de Fim" Style="margin-top: 10px" />
-        <RadzenDatePicker @bind-Value="Evento.DATA_FIM" Style="width: 100%" DateFormat="dd/MM/yyyy" Name="dataFim" />
+        <RadzenDatePicker @bind-Value="Evento.DATA_FIM"
+                          Style="width: 100%"
+                          DateFormat="dd/MM/yyyy HH:mm"
+                          ShowTime="true"
+                          Name="dataFim" />
         <ValidationMessage For="@(() => Evento.DATA_FIM)" />
     </RadzenFieldset>
 
