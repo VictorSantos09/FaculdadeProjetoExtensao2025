@@ -1,19 +1,26 @@
 ﻿@using Evento.Core.Extensions
+@using Evento.UI.Generator
 @inject IPESSOAS_REPOSITORY pessoa_repository
 @inject IPessoaService PessoaService
 @inject NotificationService NotificationService
 @inject DialogService DialogService
+@inject IJSRuntime JS
 
 <RadzenDataGrid @ref="grid" Data="@Pessoas" TItem="PESSOAS"
                 AllowFiltering="true" AllowPaging="true" PageSize="5"
                 AllowSorting="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
                 Responsive="true" ShowPagingSummary="true">
-
+    <HeaderTemplate>
+        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="1rem;" Wrap="FlexWrap.Wrap">
+            <RadzenButton Text="Exportar Excel" Icon="grid_on" Click="@(async () => await ExportAsync("excel"))" />
+            <RadzenButton Text="Exportar CSV" Icon="wrap_text" Click="@(async () => await ExportAsync("csv"))" />
+        </RadzenStack>
+    </HeaderTemplate>
     <Columns>
         <RadzenDataGridColumn Property="ID" Title="ID" Width="50px" />
         <RadzenDataGridColumn Property="NOME" Title="Nome" />
         <RadzenDataGridColumn Property="DATA_NASCIMENTO" Title="Nascimento" FormatString="{0:dd/MM/yyyy}" />
-        <RadzenDataGridColumn Title="CPF">
+        <RadzenDataGridColumn Property="CPF" Title="CPF">
             <Template Context="p">
                 @p.CPF.FormatarCpf()
             </Template>
@@ -61,6 +68,7 @@
 @code {
     private RadzenDataGrid<PESSOAS>? grid;
     private List<int> pessoasSelecionadas = [];
+    private HttpClient Http = new HttpClient();
 
     [Parameter] public List<PESSOAS> Pessoas { get; set; } = [];
     [Parameter] public List<PESSOAS> PessoasNaoSelecionadas { get; set; } = [];
@@ -99,5 +107,61 @@
             await grid!.Reload();
             PessoasNaoSelecionadas.Add(pessoa);
         }
+    }
+
+    public async Task ExportAsync(string type)
+    {
+        var columnsToExport = grid!.ColumnsCollection
+            .Where(c => c.GetVisible() && !string.IsNullOrEmpty(c.Property))
+            .Select(c => c.Property!)
+            .ToArray();
+
+        var data = MapVisibleData<PESSOAS>(columnsToExport);
+
+        var fileName = $"export_{DateTime.Now:yyyyMMdd_HHmmss}";
+        var request = new ExportRequest(columnsToExport, data, fileName);
+
+        var response = await Http.PostAsJsonAsync($"https://localhost:7165/export/{type}", request);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var content = await response.Content.ReadAsByteArrayAsync();
+            var fileNameHeader = response.Content.Headers.ContentDisposition?.FileName?.Trim('"') ?? fileName;
+
+            using var streamRef = new MemoryStream(content);
+            using var stream = new DotNetStreamReference(streamRef);
+            await JS.InvokeVoidAsync("downloadFileFromStream", fileNameHeader, stream);
+        }
+        else
+        {
+            NotificationService.Notify(new NotificationMessage
+            {
+                Severity = NotificationSeverity.Error,
+                Summary = "Erro na exportação",
+                Detail = "Ocorreu um erro ao tentar exportar os dados.",
+                Duration = 4000
+            });
+        }
+    }
+
+    private protected virtual IEnumerable<Dictionary<string, object>> MapVisibleData<T>(string[] visibleColumns)
+    {
+        return grid?.Data?.Select(data =>
+        {
+            var dataDictionary = new Dictionary<string, object>();
+
+            foreach (var column in visibleColumns)
+            {
+                var propertyInfo = typeof(T).GetProperty(column);
+                if (propertyInfo is null) continue;
+
+                var value = propertyInfo.GetValue(data);
+                dataDictionary[column] = propertyInfo.PropertyType.IsEnum
+                    ? value?.ToString() ?? string.Empty
+                    : value ?? string.Empty;
+            }
+
+            return dataDictionary;
+        }) ?? Enumerable.Empty<Dictionary<string, object>>();
     }
 }

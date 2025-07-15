@@ -1,6 +1,9 @@
 using Evento.Core.Configuration;
 using Evento.UI.Components;
+using Evento.UI.Generator;
+using Microsoft.AspNetCore.Mvc;
 using Radzen;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +29,17 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.MapPost("/export/csv", (ExportRequest exportRequest) =>
+{
+    var csvData = CsvGenerator.Generate(exportRequest.Data, exportRequest.Columns);
+    return Results.File(new UTF8Encoding().GetBytes(csvData), "text/csv", $"{exportRequest.FileName}.csv");
+});
+
+app.MapPost("/export/excel", (ExportRequest exportRequest) =>
+{
+    var result = ExcelGenerator.Generate(exportRequest.Data, exportRequest.Columns);
+    return Results.File(result, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"{exportRequest.FileName}.xlsx");
+});
 
 app.UseAntiforgery();
 
