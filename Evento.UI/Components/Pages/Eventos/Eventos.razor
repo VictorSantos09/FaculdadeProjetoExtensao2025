@@ -13,8 +13,8 @@
     <Columns>
         <RadzenDataGridColumn TItem="EVENTOS" Property="ID" Title="ID" Width="50px" />
         <RadzenDataGridColumn TItem="EVENTOS" Property="NOME" Title="Nome" />
-        <RadzenDataGridColumn TItem="EVENTOS" Property="DATA_INICIO" Title="Início" FormatString="{0:dd/MM/yyyy}" />
-        <RadzenDataGridColumn TItem="EVENTOS" Property="DATA_FIM" Title="Fim" FormatString="{0:dd/MM/yyyy}" />
+        <RadzenDataGridColumn TItem="EVENTOS" Property="DATA_INICIO" Title="Início" FormatString="{0:dd/MM/yyyy HH:mm}" />
+        <RadzenDataGridColumn TItem="EVENTOS" Property="DATA_FIM" Title="Fim" FormatString="{0:dd/MM/yyyy HH:mm}" />
         <RadzenDataGridColumn TItem="EVENTOS" Title="QR Code">
             <Template Context="e">
                 <RadzenImage Path="@($"data:image/jpeg;base64,{e.Image.Imagem}")"
