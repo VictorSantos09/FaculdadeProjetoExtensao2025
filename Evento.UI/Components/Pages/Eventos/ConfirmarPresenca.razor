@@ -85,7 +85,8 @@
                 return;
             }
 
-            var result = await EventoService.ConfirmarAsync(new ConfirmarPresencaDTO(model.CPF, Id));
+            string cpf = model.CPF.Replace(".", "").Replace("-", "").Trim();
+            var result = await EventoService.ConfirmarAsync(new ConfirmarPresencaDTO(cpf, Id));
             if (result.IsSuccess)
             {
                 NotificationService.Notify(NotificationSeverity.Success, "Presença confirmada!");
