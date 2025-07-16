@@ -1,4 +1,5 @@
 ﻿@page "/confirmacaoEvento"
+@using Evento.Core.Extensions
 @using Evento.Core.Services.Evento.DTO
 @inject NavigationManager Navigation
 @inject NotificationService NotificationService
@@ -36,7 +37,10 @@
 
                         <div style="margin-bottom: 10px;">
                             <RadzenLabel Text="CPF:" Component="cpf" />
-                            <RadzenTextBox @bind-Value="form.CPF" Name="cpf" Style="width: 100%;" />
+                            <RadzenTextBox @bind-Value="form.CPF" Name="cpf" Style="width: 100%;"
+                                            MaxLength="14"
+                                           @oninput="OnCpfInput"
+                                           Placeholder="000.000.000-00" />
                             <ValidationMessage For="@(() => form.CPF)" />
                         </div>
 
@@ -70,6 +74,19 @@
                 Id = idParsed;
                 evento = await EventoService.GetByIdAsync(Id);
             }
+        }
+    }
+
+    private void OnCpfInput(ChangeEventArgs args)
+    {
+        if (args.Value is string input)
+        {
+            var numeros = new string(input.Where(char.IsDigit).ToArray());
+
+            if (numeros.Length > 11)
+                numeros = numeros.Substring(0, 11);
+
+            args.Value = numeros.FormatarCpf();
         }
     }
 

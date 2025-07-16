@@ -17,10 +17,13 @@
         <RadzenDataGridColumn TItem="EVENTOS" Property="DATA_FIM" Title="Fim" FormatString="{0:dd/MM/yyyy HH:mm}" />
         <RadzenDataGridColumn TItem="EVENTOS" Title="QR Code">
             <Template Context="e">
-                <RadzenImage Path="@($"data:image/jpeg;base64,{e.Image.Imagem}")"
-                             AlternateText="QR Code"
-                             Style="width: 50px; height: auto;"
-                             Click="@(args => AbrirQrCode(e.Image.Imagem, e.NOME))" />
+                @if (e.Image?.Imagem != null)
+                {
+                    <RadzenImage Path="@($"data:image/jpeg;base64,{e.Image.Imagem}")"
+                                 AlternateText="QR Code"
+                                 Style="width: 50px; height: auto;"
+                                 Click="@(args => AbrirQrCode(e.Image.Imagem, e.NOME))" />
+                }
             </Template>
         </RadzenDataGridColumn>
         <RadzenDataGridColumn TItem="EVENTOS" Context="e" Width="120px" Title="Ações">
@@ -77,6 +80,7 @@
             var index = eventos.FindIndex(x => x.ID == atualizado.ID);
             if (index != -1)
             {
+                atualizado.Image = eventos.ElementAt(index).Image;
                 eventos[index] = atualizado;
                 await EventoService.UpdateAsync(atualizado);
                 await grid!.Reload();
